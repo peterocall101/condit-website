@@ -1,0 +1,2823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Condit - Condition Reports for Galleries</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0c0d18;
+      --bg-2:      #111220;
+      --surface:   #161724;
+      --surface-2: #1d1e30;
+      --border:    rgba(255,255,255,0.07);
+      --border-2:  rgba(255,255,255,0.12);
+      --gold:      #c2923a;
+      --gold-light:#d4a854;
+      --gold-pale: rgba(194,146,58,0.12);
+      --ink:       #f0f0f2;
+      --ink-2:     rgba(240,240,242,0.65);
+      --ink-3:     rgba(240,240,242,0.38);
+      --r:         10px;
+      --r-lg:      16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ---- Nav ---- */
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 24px;
+      background: rgba(12,13,24,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-3);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--bg) !important;
+      font-weight: 600 !important;
+      padding: 7px 16px !important;
+      border-radius: 7px !important;
+    }
+
+    .nav-cta:hover { opacity: 0.85; color: var(--bg) !important; }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--ink-2);
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* ---- Sections ---- */
+
+    section { padding: 100px 24px; }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* ---- Hero ---- */
+
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated dot grid background */
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 40%, black 20%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 40%, black 20%, transparent 100%);
+      animation: grid-drift 18s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes grid-drift {
+      from { background-position: 0 0; }
+      to   { background-position: 32px 32px; }
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% -5%, rgba(194,146,58,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 35% 35% at 78% 55%, rgba(194,146,58,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+
+    .hero-eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.45; transform: scale(0.65); }
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 4.5vw, 56px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      text-wrap: balance;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--ink-2);
+      line-height: 1.65;
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    /* Credibility strip */
+    .hero-strip {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: rgba(255,255,255,0.02);
+      overflow: hidden;
+      max-width: 400px;
+    }
+
+    .hero-strip-item {
+      flex: 1;
+      padding: 11px 14px;
+      text-align: center;
+    }
+
+    .hero-strip-sep {
+      width: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .hero-strip-val {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .hero-strip-lbl {
+      display: block;
+      font-size: 10px;
+      color: var(--ink-3);
+      line-height: 1.3;
+      margin-top: 2px;
+    }
+
+    /* ---- Buttons ---- */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: var(--r);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary { background: var(--gold); color: var(--bg); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink-2);
+      border: 1px solid var(--border-2);
+    }
+
+    .btn-ghost:hover { color: var(--ink); border-color: rgba(255,255,255,0.25); }
+
+    /* ---- Hero app mockup ---- */
+
+    .mockup {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 40px 80px rgba(0,0,0,0.5),
+        0 0 60px rgba(194,146,58,0.06);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .mockup-bar {
+      background: var(--bg-2);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mockup-dots { display: flex; gap: 6px; }
+
+    .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mockup-dot:nth-child(1) { background: rgba(255,95,87,0.6); }
+    .mockup-dot:nth-child(2) { background: rgba(255,189,46,0.6); }
+    .mockup-dot:nth-child(3) { background: rgba(39,201,63,0.6); }
+
+    .mockup-url {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--ink-3);
+      font-family: monospace;
+    }
+
+    .mockup-body { padding: 16px; }
+    .mockup-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+
+    .mockup-tab { padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+    .mockup-tab.active { background: var(--bg); color: var(--ink); }
+    .mockup-tab.inactive { color: var(--ink-3); }
+
+    .mockup-section-header {
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .mockup-fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .mockup-field { display: flex; flex-direction: column; gap: 4px; }
+
+    .mockup-label {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .mockup-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      height: 26px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mockup-input.filled { border-color: rgba(255,255,255,0.15); }
+
+    .mockup-input.filled::after {
+      content: '';
+      position: absolute;
+      left: 8px; top: 50%;
+      transform: translateY(-50%);
+      width: 55%; height: 6px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 3px;
+    }
+
+    .mockup-rating { display: flex; gap: 4px; }
+
+    .mockup-rating-btn {
+      flex: 1; height: 24px; border-radius: 4px;
+      background: var(--bg); border: 1px solid var(--border);
+      font-size: 9px; display: flex; align-items: center;
+      justify-content: center; font-weight: 600; color: var(--ink-3);
+    }
+
+    .mockup-rating-btn.good {
+      background: rgba(39,174,96,0.15);
+      border-color: rgba(39,174,96,0.3);
+      color: #4ade80;
+    }
+
+    .mockup-download {
+      background: var(--gold);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--bg);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* ---- Section labels ---- */
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      text-wrap: balance;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--ink-2);
+      line-height: 1.65;
+      max-width: 560px;
+    }
+
+    /* ---- Problem: before/after split ---- */
+
+    .problem {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ba-card {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      margin-top: 48px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+
+    .ba-side { padding: 36px 32px; }
+
+    .ba-side.ba-after {
+      background: linear-gradient(135deg, rgba(194,146,58,0.04) 0%, var(--surface) 60%);
+      border-left: 1px solid var(--border);
+    }
+
+    .ba-side-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-3);
+      margin-bottom: 24px;
+    }
+
+    .ba-side-label.gold { color: var(--gold); }
+
+    .ba-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .ba-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.45;
+    }
+
+    .ba-ico {
+      flex-shrink: 0;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700;
+      margin-top: 1px;
+    }
+
+    .ba-ico.x  { background: rgba(248,113,113,0.12); color: #f87171; }
+    .ba-ico.ok { background: rgba(74,222,128,0.13);  color: #4ade80; }
+
+    .ba-divider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .ba-divider::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: 50%;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .ba-vs {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700;
+      color: var(--ink-3);
+      z-index: 1;
+      letter-spacing: 0.02em;
+    }
+
+    /* ---- Features: icon-forward hover reveal ---- */
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      position: relative;
+      overflow: hidden;
+      min-height: 240px;
+      transition: border-color 0.25s;
+    }
+
+    .feature-card:hover { border-color: rgba(194,146,58,0.3); }
+
+    /* Default face: icon + title centered */
+    .feature-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 32px;
+      transition: opacity 0.22s;
+    }
+
+    .feature-card:hover .feature-face { opacity: 0; }
+
+    .feature-icon-lg {
+      font-size: 44px;
+      line-height: 1;
+    }
+
+    .feature-name {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-align: center;
+      color: var(--ink);
+    }
+
+    /* Hover reveal: slides up from below */
+    .feature-reveal {
+      position: absolute;
+      inset: 0;
+      background: var(--surface-2);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .feature-card:hover .feature-reveal { transform: translateY(0); }
+
+    .feature-reveal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(194,146,58,0.4), transparent);
+    }
+
+    .feature-reveal-icon { font-size: 22px; line-height: 1; }
+
+    .feature-reveal-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .feature-reveal-desc {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.65;
+    }
+
+    /* ---- How it works: step list + animated panel ---- */
+
+    .how-bg {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .how-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-top: 64px;
+    }
+
+    .how-steps { display: flex; flex-direction: column; }
+
+    .how-step {
+      display: flex;
+      gap: 16px;
+      cursor: pointer;
+      opacity: 0.4;
+      transition: opacity 0.3s;
+    }
+
+    .how-step.active { opacity: 1; }
+
+    .how-step-ind {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      width: 22px;
+      padding-top: 3px;
+    }
+
+    .how-step-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.18);
+      background: transparent;
+      flex-shrink: 0;
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+    }
+
+    .how-step.active .how-step-dot {
+      background: var(--gold);
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(194,146,58,0.2);
+    }
+
+    .how-step-line {
+      flex: 1;
+      width: 1px;
+      background: var(--border);
+      margin-top: 6px;
+      min-height: 28px;
+    }
+
+    .how-step:last-child .how-step-line { display: none; }
+
+    .how-step-body { padding-bottom: 28px; flex: 1; }
+    .how-step:last-child .how-step-body { padding-bottom: 0; }
+
+    .how-step-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .how-step-desc {
+      font-size: 13px;
+      color: var(--ink-2);
+      line-height: 1.6;
+    }
+
+    /* Panel */
+    .how-panel {
+      background: var(--surface);
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(194,146,58,0.05);
+      position: sticky;
+      top: 80px;
+    }
+
+    .how-panel-chrome {
+      background: var(--bg-2);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .how-panel-dots { display: flex; gap: 6px; }
+    .how-panel-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .how-panel-dot:nth-child(1) { background: rgba(255,95,87,0.55); }
+    .how-panel-dot:nth-child(2) { background: rgba(255,189,46,0.55); }
+    .how-panel-dot:nth-child(3) { background: rgba(39,201,63,0.55); }
+
+    .how-panel-url {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--ink-3);
+      font-family: monospace;
+    }
+
+    .how-progress-track {
+      height: 2px;
+      background: var(--border);
+    }
+
+    #how-progress {
+      height: 100%;
+      background: var(--gold);
+      width: 0%;
+    }
+
+    .how-screens {
+      position: relative;
+      height: 340px;
+    }
+
+    .how-screen {
+      position: absolute;
+      inset: 0;
+      padding: 20px;
+      opacity: 0;
+      transform: translateX(14px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .how-screen.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    /* Screen 0: template selection */
+    .hs-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
+
+    .hs-tab {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .hs-tab.on { background: var(--bg); color: var(--ink); }
+    .hs-tab.off { color: var(--ink-3); }
+
+    .hs-template-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .hs-tpl {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .hs-tpl.company {
+      border-color: rgba(194,146,58,0.2);
+      background: rgba(194,146,58,0.04);
+    }
+
+    .hs-tpl-icon { font-size: 17px; flex-shrink: 0; }
+    .hs-tpl-name { font-size: 12px; font-weight: 600; color: var(--ink); flex: 1; }
+    .hs-tpl-sub { font-size: 10px; color: var(--ink-3); margin-top: 2px; }
+
+    .hs-tpl-btn {
+      font-size: 10px; font-weight: 700;
+      color: var(--gold);
+      background: var(--gold-pale);
+      padding: 4px 10px;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+
+    /* Screen 1: template editor */
+    .hs-editor-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .hs-editor-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+    .hs-badge {
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--gold); background: var(--gold-pale);
+      padding: 2px 7px; border-radius: 20px;
+    }
+
+    .hs-sections { display: flex; flex-direction: column; gap: 3px; margin-bottom: 14px; }
+
+    .hs-sec {
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 11px; font-weight: 500;
+      color: var(--ink-3);
+    }
+
+    .hs-sec.on { background: var(--bg); color: var(--ink); font-weight: 600; }
+
+    .hs-field-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+
+    .hs-field-pill {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 10px; font-weight: 600;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--ink-2);
+    }
+
+    .hs-field-pill.add {
+      border-color: rgba(194,146,58,0.3);
+      color: var(--gold);
+      background: var(--gold-pale);
+    }
+
+    .hs-publish {
+      background: var(--gold);
+      border-radius: 7px;
+      padding: 9px 12px;
+      font-size: 11px; font-weight: 700;
+      color: var(--bg);
+      text-align: center;
+    }
+
+    /* Screen 2: fill form */
+    .hs-form-sec {
+      font-size: 10px; font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      background: var(--bg);
+      padding: 6px 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .hs-form-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .hs-form-field { display: flex; flex-direction: column; gap: 3px; }
+
+    .hs-form-lbl {
+      font-size: 9px; font-weight: 600;
+      color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+
+    .hs-form-val {
+      background: var(--bg);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 5px;
+      height: 24px;
+      position: relative; overflow: hidden;
+    }
+
+    .hs-form-val::after {
+      content: '';
+      position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+      width: 60%; height: 5px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+    }
+
+    .hs-rating { display: flex; gap: 4px; margin-bottom: 10px; }
+
+    .hs-r-btn {
+      flex: 1; height: 22px; border-radius: 4px;
+      background: var(--bg); border: 1px solid var(--border);
+      font-size: 9px; font-weight: 600; color: var(--ink-3);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .hs-r-btn.sel {
+      background: rgba(39,174,96,0.15);
+      border-color: rgba(39,174,96,0.3);
+      color: #4ade80;
+    }
+
+    .hs-photos { display: flex; gap: 6px; }
+
+    .hs-photo-thumb {
+      width: 44px; height: 44px;
+      border-radius: 5px;
+      background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+
+    .hs-photo-thumb.img {
+      background: rgba(194,146,58,0.1);
+      border-color: rgba(194,146,58,0.2);
+    }
+
+    .hs-photo-add {
+      width: 44px; height: 44px;
+      border-radius: 5px;
+      border: 1px dashed rgba(255,255,255,0.13);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: var(--ink-3); flex-shrink: 0;
+    }
+
+    /* Screen 3: download */
+    .hs-complete {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(74,222,128,0.07);
+      border: 1px solid rgba(74,222,128,0.18);
+      border-radius: 7px;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+    }
+
+    .hs-complete-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%; background: #4ade80; flex-shrink: 0;
+    }
+
+    .hs-complete-text { font-size: 12px; font-weight: 600; color: #4ade80; }
+
+    .hs-pdf-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex; gap: 10px;
+    }
+
+    .hs-pdf-logo {
+      width: 32px; height: 32px;
+      border-radius: 5px;
+      background: var(--gold-pale);
+      border: 1px solid rgba(194,146,58,0.2);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--gold);
+    }
+
+    .hs-pdf-lines {
+      flex: 1;
+      display: flex; flex-direction: column; gap: 5px; justify-content: center;
+    }
+
+    .hs-pdf-line {
+      height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px;
+    }
+
+    .hs-pdf-line.short { width: 55%; }
+
+    .hs-dl-btn {
+      background: var(--gold);
+      border-radius: 7px;
+      padding: 10px 12px;
+      font-size: 11px; font-weight: 700; color: var(--bg);
+      text-align: center;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    /* Screen 4: re-upload */
+    .hs-dropzone {
+      border: 2px dashed rgba(255,255,255,0.11);
+      border-radius: 10px;
+      padding: 28px 20px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .hs-dropzone-icon { font-size: 30px; margin-bottom: 8px; display: block; }
+    .hs-dropzone-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+    .hs-dropzone-sub { font-size: 11px; color: var(--ink-3); }
+
+    .hs-recent {
+      display: flex; align-items: center; gap: 9px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 9px 11px;
+    }
+
+    .hs-recent-icon { font-size: 16px; flex-shrink: 0; }
+    .hs-recent-name { font-size: 11px; font-weight: 600; color: var(--ink); flex: 1; }
+    .hs-recent-sub { font-size: 10px; color: var(--ink-3); }
+    .hs-recent-open { font-size: 10px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+
+    /* Dropdown field mockup */
+    .hs-dropdown {
+      background: var(--bg);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 5px;
+      height: 24px;
+      position: relative; overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .hs-dropdown::after {
+      content: '▾';
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      font-size: 9px; color: var(--ink-3); pointer-events: none;
+    }
+
+    .hs-dropdown-val {
+      position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+      font-size: 10px; color: var(--ink-2);
+    }
+
+    /* Checkbox group mockup */
+    .hs-checks { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
+
+    .hs-check-row {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 10px; color: var(--ink-2);
+    }
+
+    .hs-check-box {
+      width: 13px; height: 13px; border-radius: 3px;
+      border: 1px solid var(--border-2); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px;
+    }
+
+    .hs-check-box.ticked {
+      background: rgba(194,146,58,0.2);
+      border-color: rgba(194,146,58,0.4);
+      color: var(--gold);
+    }
+
+    /* Lock badge on template */
+    .hs-lock-banner {
+      display: flex; align-items: center; gap: 7px;
+      background: rgba(194,146,58,0.08);
+      border: 1px solid rgba(194,146,58,0.2);
+      border-radius: 7px;
+      padding: 8px 11px;
+      margin-bottom: 12px;
+      font-size: 11px; color: var(--gold); font-weight: 600;
+    }
+
+    .hs-lock-icon { font-size: 13px; flex-shrink: 0; }
+
+    /* ---- Why Condit ---- */
+
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 56px;
+    }
+
+    .comparison-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 32px;
+    }
+
+    .comparison-card.highlight {
+      border-color: rgba(194,146,58,0.3);
+      background: linear-gradient(135deg, var(--surface) 0%, rgba(194,146,58,0.04) 100%);
+    }
+
+    .comparison-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 20px;
+    }
+
+    .comparison-title.gold { color: var(--gold); }
+
+    .comparison-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+
+    .comparison-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--ink-2); line-height: 1.5;
+    }
+
+    .check {
+      flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(74,222,128,0.15); color: #4ade80;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; margin-top: 1px;
+    }
+
+    .cross {
+      flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(248,113,113,0.12); color: #f87171;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; margin-top: 1px;
+    }
+
+    /* ---- Pricing ---- */
+
+    .pricing-bg {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 32px;
+      position: relative;
+      transition: transform 0.2s;
+    }
+
+    .pricing-card:hover { transform: translateY(-3px); }
+
+    .pricing-card.featured {
+      border-color: rgba(194,146,58,0.4);
+      background: linear-gradient(160deg, rgba(194,146,58,0.06) 0%, var(--surface) 40%);
+      transform: translateY(-6px);
+    }
+
+    .pricing-card.featured:hover { transform: translateY(-9px); }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold); color: var(--bg);
+      font-size: 10px; font-weight: 700;
+      padding: 3px 12px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .pricing-name {
+      font-size: 13px; font-weight: 700;
+      color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .pricing-price {
+      font-size: 42px; font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price sup {
+      font-size: 20px; font-weight: 600;
+      vertical-align: super; letter-spacing: 0;
+    }
+
+    .pricing-period {
+      font-size: 12px; color: var(--ink-3);
+      margin-bottom: 20px;
+    }
+
+    .pricing-seats {
+      font-size: 13px; color: var(--ink-2);
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .pricing-features li {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 13px; color: var(--ink-2);
+    }
+
+    .pricing-features li::before {
+      content: '';
+      width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(74,222,128,0.15);
+      background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 7L6 10L11 4' stroke='%234ade80' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    .btn-pricing {
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--r);
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      text-align: center; text-decoration: none; display: block;
+      transition: opacity 0.15s, transform 0.15s;
+      border: none;
+    }
+
+    .btn-pricing:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-pricing-primary { background: var(--gold); color: var(--bg); }
+    .btn-pricing-ghost {
+      background: transparent; color: var(--ink-2);
+      border: 1px solid var(--border-2);
+    }
+
+    /* ---- Contact ---- */
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-top: 56px;
+    }
+
+    .contact-detail {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .contact-detail-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--gold-pale);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+
+    .contact-detail-label {
+      font-size: 11px; font-weight: 700;
+      color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+
+    .contact-detail-value { font-size: 14px; color: var(--ink-2); }
+
+    .contact-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 32px;
+    }
+
+    .form-row { margin-bottom: 18px; }
+
+    .form-label {
+      display: block;
+      font-size: 11px; font-weight: 600;
+      color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 7px;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border-2);
+      border-radius: var(--r);
+      color: var(--ink);
+      font-family: inherit; font-size: 14px;
+      padding: 10px 13px;
+      outline: none;
+      transition: border-color 0.15s;
+      appearance: none;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: rgba(194,146,58,0.5);
+    }
+
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--ink-3); }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .form-submit {
+      width: 100%; padding: 12px;
+      background: var(--gold); color: var(--bg);
+      border: none; border-radius: var(--r);
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: opacity 0.15s; margin-top: 4px;
+    }
+
+    .form-submit:hover { opacity: 0.85; }
+
+    .form-success {
+      display: none; text-align: center;
+      padding: 20px; color: #4ade80; font-size: 15px;
+    }
+
+    /* ---- Footer ---- */
+
+    footer { border-top: 1px solid var(--border); padding: 40px 24px; }
+
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .footer-logo { font-size: 16px; font-weight: 700; color: var(--gold); letter-spacing: -0.02em; }
+    .footer-copy { font-size: 12px; color: var(--ink-3); }
+
+    /* ---- Scroll reveal ---- */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ---- Light theme for panel screens (matches actual app) ---- */
+
+    .how-screens { background: #edeae4; }
+    .how-screen  { background: #edeae4; }
+
+    .hs-tabs { background: #fff; border-radius: 8px; padding: 6px 8px; gap: 4px; margin-bottom: 12px; }
+    .hs-tab.on  { background: #2d0f0f; color: #c2923a; }
+    .hs-tab.off { background: transparent; color: #888; }
+
+    .hs-tpl { background: #fff; border-color: #ddd; }
+    .hs-tpl-name { color: #1a1a1a; }
+    .hs-tpl-sub  { color: #999; }
+    .hs-tpl-btn  { background: #f0ede8; color: #2d0f0f; border: 1px solid #ddd; font-size:10px; font-weight:700; padding:4px 9px; border-radius:5px; flex-shrink:0; }
+    .hs-tpl.company { background: rgba(194,146,58,0.06); border-color: rgba(194,146,58,0.3); }
+
+    .hs-editor-title { color: #1a1a1a; }
+    .hs-badge { background: rgba(194,146,58,0.15); color: #9a7228; }
+    .hs-sec { color: #999; }
+    .hs-sec.on { background: #fff; color: #1a1a1a; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .hs-field-pill { background: #fff; border-color: #ddd; color: #555; }
+    .hs-field-pill.add { background: rgba(194,146,58,0.1); border-color: rgba(194,146,58,0.35); color: #9a7228; }
+    .hs-lock-banner { background: rgba(194,146,58,0.1); border-color: rgba(194,146,58,0.3); color: #9a7228; }
+    .hs-publish { background: #c2923a; color: #fff; border-radius: 7px; }
+
+    .hs-form-sec { background: #2d0f0f; color: #c2923a; }
+    .hs-form-lbl { color: #999; }
+    .hs-form-val { background: #fff; border-color: #ddd; }
+    .hs-form-val::after { background: #e0dbd5; }
+
+    .hs-rating { gap: 4px; }
+    .hs-r-btn { background: #fff; border-color: #ddd; color: #888; }
+    .hs-r-btn.sel { background: rgba(74,174,96,0.1); border-color: rgba(74,174,96,0.35); color: #2a8a52; }
+
+    .hs-check-row { color: #555; }
+    .hs-check-box { background: #fff; border-color: #ccc; }
+    .hs-check-box.ticked { background: rgba(194,146,58,0.15); border-color: #c2923a; color: #9a7228; }
+
+    .hs-dropdown { background: #fff; border-color: #ddd; }
+    .hs-dropdown-val { color: #444; }
+    .hs-dropdown::after { color: #999; }
+
+    .hs-photo-thumb { background: #fff; border-color: #ddd; }
+    .hs-photo-thumb.img { background: rgba(194,146,58,0.08); border-color: rgba(194,146,58,0.25); }
+    .hs-photo-add { border-color: #ccc; color: #bbb; }
+
+    .hs-complete { background: rgba(74,174,96,0.08); border-color: rgba(74,174,96,0.22); }
+    .hs-complete-text { color: #2a8a52; }
+    .hs-complete-dot { background: #2a8a52; }
+    .hs-pdf-preview { background: #fff; border-color: #ddd; }
+    .hs-pdf-line { background: #ddd; }
+    .hs-dl-btn { background: #c2923a; color: #fff; }
+
+    .hs-dropzone { border-color: #ccc; }
+    .hs-dropzone-title { color: #1a1a1a; }
+    .hs-dropzone-sub { color: #999; }
+    .hs-recent { background: #fff; border-color: #ddd; }
+    .hs-recent-name { color: #1a1a1a; }
+    .hs-recent-sub { color: #999; }
+    .hs-recent-open { color: #9a7228; }
+
+    /* ---- Pricing calculator ---- */
+
+    .pricing-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .team-calc {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 4px;
+      margin-bottom: 20px;
+    }
+
+    .team-calc-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .team-calc-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .calc-stepper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid var(--border-2);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .calc-btn {
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: none;
+      color: var(--ink-2);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+
+    .calc-btn:hover { background: rgba(255,255,255,0.06); }
+
+    .calc-num {
+      width: 40px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      outline: none;
+      padding: 0;
+      height: 32px;
+    }
+
+    .calc-num::-webkit-inner-spin-button,
+    .calc-num::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+    .team-calc-result {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .calc-per-user {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+    }
+
+    .calc-per-user sup {
+      font-size: 13px;
+      font-weight: 600;
+      vertical-align: super;
+      letter-spacing: 0;
+    }
+
+    .calc-per-label {
+      font-size: 11px;
+      color: var(--ink-3);
+      line-height: 1.3;
+    }
+
+    .calc-total {
+      text-align: right;
+    }
+
+    .calc-total-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .calc-total-label {
+      font-size: 10px;
+      color: var(--ink-3);
+    }
+
+    .calc-tier-note {
+      font-size: 11px;
+      color: var(--ink-3);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* ---- Team workflow section ---- */
+
+    .workflow-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      margin-top: 56px;
+    }
+
+    .workflow-points {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .workflow-point {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .workflow-point-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--gold-pale);
+      border: 1px solid rgba(194,146,58,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 17px;
+    }
+
+    .workflow-point-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 3px;
+      letter-spacing: -0.01em;
+    }
+
+    .workflow-point-desc {
+      font-size: 13px;
+      color: var(--ink-2);
+      line-height: 1.6;
+    }
+
+    .workflow-mockup-frame {
+      background: var(--surface);
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(194,146,58,0.04);
+    }
+
+    .wm-chrome {
+      background: var(--bg-2);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .wm-dots { display: flex; gap: 5px; }
+    .wm-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .wm-dot:nth-child(1) { background: rgba(255,95,87,0.55); }
+    .wm-dot:nth-child(2) { background: rgba(255,189,46,0.55); }
+    .wm-dot:nth-child(3) { background: rgba(39,201,63,0.55); }
+
+    .wm-url {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      padding: 3px 9px;
+      font-size: 10px;
+      color: var(--ink-3);
+      font-family: monospace;
+    }
+
+    .wm-nav {
+      background: #0c0d18;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 38px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .wm-nav-logo {
+      font-size: 13px;
+      font-weight: 700;
+      color: #c2923a;
+      letter-spacing: -0.02em;
+    }
+
+    .wm-nav-link {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .wm-nav-link.active {
+      color: rgba(255,255,255,0.75);
+    }
+
+    .wm-body {
+      background: #f2f3f5;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .wm-page-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0e0f14;
+      letter-spacing: -0.02em;
+      margin-bottom: 2px;
+    }
+
+    .wm-person-section {
+      background: #fff;
+      border: 1px solid #e4e5e9;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .wm-person-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 11px 8px;
+      border-bottom: 1px solid #f0f1f4;
+    }
+
+    .wm-person-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(194,146,58,0.18);
+      color: #9a7228;
+      font-size: 8px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
+    }
+
+    .wm-person-avatar.other {
+      background: #edeef2;
+      color: #888;
+    }
+
+    .wm-person-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #0e0f14;
+    }
+
+    .wm-you-tag {
+      font-size: 9px;
+      font-weight: 500;
+      color: #9395a8;
+      margin-left: 4px;
+    }
+
+    .wm-subsection {
+      padding: 7px 11px;
+      border-bottom: 1px solid #f0f1f4;
+    }
+
+    .wm-subsection:last-child { border-bottom: none; }
+
+    .wm-subsection-label {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #b0b2c0;
+      margin-bottom: 5px;
+    }
+
+    .wm-card {
+      background: #f8f8fa;
+      border: 1px solid #e8e9ee;
+      border-radius: 7px;
+      padding: 7px 9px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .wm-card + .wm-card { margin-top: 4px; }
+
+    .wm-card.other { opacity: 0.45; }
+
+    .wm-card-body { flex: 1; min-width: 0; }
+
+    .wm-card-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: #0e0f14;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .wm-card-meta {
+      font-size: 9px;
+      color: #9395a8;
+      margin-top: 1px;
+    }
+
+    .wm-card-btns {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .wm-btn {
+      font-size: 9px;
+      font-weight: 600;
+      padding: 3px 7px;
+      border-radius: 4px;
+      border: 1px solid #e4e5e9;
+      background: #fff;
+      color: #4a4b58;
+      white-space: nowrap;
+    }
+
+    .wm-btn.notes {
+      color: #9395a8;
+      border-color: #e4e5e9;
+    }
+
+    .wm-btn.danger { color: #c2410c; border-color: rgba(185,28,28,0.18); }
+
+    .wm-chain {
+      margin-top: 6px;
+      border-top: 1px solid #edeef2;
+      padding-top: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .wm-chain-item {
+      padding-left: 8px;
+      border-left: 2px solid #dfe0e8;
+      font-size: 9px;
+      color: #6b6d7e;
+      line-height: 1.5;
+    }
+
+    .wm-chain-actor {
+      font-weight: 700;
+      color: #2a2b38;
+    }
+
+    .wm-chain-time {
+      color: #b0b2c0;
+    }
+
+    .wm-chain-note {
+      display: block;
+      font-style: italic;
+      color: #888;
+      margin-top: 1px;
+    }
+
+    /* ---- Responsive ---- */
+
+    @media (max-width: 768px) {
+      section { padding: 70px 20px; }
+      .hero { padding: 100px 20px 60px; }
+
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .mockup { max-width: 420px; margin: 0 auto; animation: none; box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 40px rgba(194,146,58,0.05); }
+      .hero-strip { max-width: 100%; }
+
+      .ba-card { grid-template-columns: 1fr; }
+      .ba-side.ba-after { border-left: none; border-top: 1px solid var(--border); }
+      .ba-divider { display: none; }
+
+      .features-grid { grid-template-columns: 1fr; }
+      .feature-card { min-height: auto; }
+      .feature-face {
+        position: static;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 20px 20px 8px;
+        gap: 14px;
+        opacity: 1 !important;
+      }
+      .feature-icon-lg { font-size: 28px; }
+      .feature-name { font-size: 15px; text-align: left; }
+      .feature-reveal {
+        position: static;
+        transform: none !important;
+        background: transparent;
+        padding: 0 20px 20px;
+        transition: none;
+      }
+      .feature-reveal::before { display: none; }
+      .feature-reveal-icon, .feature-reveal-title { display: none; }
+
+      .how-layout { grid-template-columns: 1fr; gap: 32px; }
+      .how-panel { position: static; display: block; }
+      .how-screens { height: 300px; }
+      .how-step { opacity: 1; }
+      .how-step-dot { background: var(--gold); border-color: var(--gold); }
+      .how-step-body { padding-bottom: 22px; }
+
+      .workflow-layout { grid-template-columns: 1fr; gap: 36px; }
+
+      .comparison { grid-template-columns: 1fr; }
+
+      .pricing-grid-2 { grid-template-columns: 1fr; }
+      .pricing-card.featured { transform: none; }
+      .pricing-card.featured:hover { transform: translateY(-3px); }
+
+      .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; }
+      .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---- Reduced motion ---- */
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .mockup { animation: none; }
+      .hero-eyebrow-dot { animation: none; }
+      .hero-grid-bg { animation: none; }
+      .how-screen { transition: none; }
+      #how-progress { transition: none; }
+      .feature-reveal { transition: none; }
+      .feature-face { transition: none; }
+      .btn:hover, .btn-pricing:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Condit</a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact" class="nav-cta">Get in touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-label="Menu" onclick="toggleMobileNav()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          End-to-end condition report platform
+        </div>
+        <h1>Condition reports. <em>Done as a team.</em></h1>
+        <p class="hero-sub">Condit is a purpose-built web dashboard for producing and managing condition reports end-to-end. A shared workspace your whole team works from - locked templates, a built-in review workflow, and branded PDFs in one click. No more Word docs emailed around in chains.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Request access</a>
+          <a href="#how" class="btn btn-ghost">See how it works</a>
+        </div>
+        <div class="hero-strip">
+          <div class="hero-strip-item">
+            <span class="hero-strip-val">&lt; 5 min</span>
+            <span class="hero-strip-lbl">per report</span>
+          </div>
+          <div class="hero-strip-sep"></div>
+          <div class="hero-strip-item">
+            <span class="hero-strip-val">One click</span>
+            <span class="hero-strip-lbl">to PDF</span>
+          </div>
+          <div class="hero-strip-sep"></div>
+          <div class="hero-strip-item">
+            <span class="hero-strip-val">Team queue</span>
+            <span class="hero-strip-lbl">review, reassign, audit trail</span>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="mockup-bar">
+          <div class="mockup-dots">
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+          </div>
+          <div class="mockup-url">condit.app</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-tabs">
+            <div class="mockup-tab active">Incoming</div>
+            <div class="mockup-tab inactive">Outgoing</div>
+            <div class="mockup-tab inactive">Collection</div>
+          </div>
+          <div class="mockup-section-header">Artwork Information</div>
+          <div class="mockup-fields">
+            <div class="mockup-field">
+              <div class="mockup-label">Artist</div>
+              <div class="mockup-input filled" style="position:relative">
+                <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:10px;color:rgba(240,240,242,0.4)">Sarah Brennan</span>
+              </div>
+            </div>
+            <div class="mockup-field">
+              <div class="mockup-label">Medium</div>
+              <div class="mockup-input" style="position:relative;border-color:rgba(255,255,255,0.12)">
+                <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:10px;color:rgba(240,240,242,0.2)">Oil on canvas</span>
+                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:9px;color:rgba(240,240,242,0.2)">▾</span>
+              </div>
+            </div>
+          </div>
+          <div class="mockup-section-header">Condition Assessment</div>
+          <div class="mockup-fields">
+            <div class="mockup-field">
+              <div class="mockup-label">Overall condition</div>
+              <div class="mockup-rating">
+                <div class="mockup-rating-btn good">Good</div>
+                <div class="mockup-rating-btn">Fair</div>
+                <div class="mockup-rating-btn">Poor</div>
+                <div class="mockup-rating-btn">Critical</div>
+              </div>
+            </div>
+            <div class="mockup-field" style="margin-top:4px">
+              <div class="mockup-label">Surface defects</div>
+              <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px">
+                <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(240,240,242,0.55)">
+                  <div style="width:11px;height:11px;border-radius:2px;background:rgba(194,146,58,0.2);border:1px solid rgba(194,146,58,0.4);display:flex;align-items:center;justify-content:center;font-size:7px;color:#c2923a;flex-shrink:0">✓</div>
+                  Cracking
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(240,240,242,0.35)">
+                  <div style="width:11px;height:11px;border-radius:2px;background:var(--bg);border:1px solid rgba(255,255,255,0.1);flex-shrink:0"></div>
+                  Abrasion
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(240,240,242,0.35)">
+                  <div style="width:11px;height:11px;border-radius:2px;background:var(--bg);border:1px solid rgba(255,255,255,0.1);flex-shrink:0"></div>
+                  Discolouration
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mockup-download">Download PDF</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem: before/after split -->
+  <section class="problem">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">The problem</div>
+        <h2 class="section-heading">Word docs and Excel sheets are slow, messy, and inconsistent.</h2>
+        <p class="section-sub">Most teams cobble together spreadsheets, Word templates, and manually edited PDFs. It's slow, every person does it differently, and nothing moves fast. There's a better way.</p>
+      </div>
+      <div class="ba-card reveal">
+        <div class="ba-side ba-before">
+          <div class="ba-side-label">Without Condit</div>
+          <ul class="ba-list">
+            <li><span class="ba-ico x">✕</span> Messy Word docs and Excel sheets</li>
+            <li><span class="ba-ico x">✕</span> Manually editing PDFs after the fact</li>
+            <li><span class="ba-ico x">✕</span> Every examiner does it their own way</li>
+            <li><span class="ba-ico x">✕</span> Slow, error-prone, hard to format</li>
+            <li><span class="ba-ico x">✕</span> Photos sent separately, often lost</li>
+            <li><span class="ba-ico x">✕</span> Can't amend a report once it's sent</li>
+            <li><span class="ba-ico x">✕</span> No review workflow - reports emailed around in chains</li>
+          </ul>
+        </div>
+        <div class="ba-divider">
+          <div class="ba-vs">vs</div>
+        </div>
+        <div class="ba-side ba-after">
+          <div class="ba-side-label gold">With Condit</div>
+          <ul class="ba-list">
+            <li><span class="ba-ico ok">✓</span> Clean, fast interface - report done in minutes</li>
+            <li><span class="ba-ico ok">✓</span> Locked templates, consistent every time</li>
+            <li><span class="ba-ico ok">✓</span> Checklists, dropdowns, ratings - all built in</li>
+            <li><span class="ba-ico ok">✓</span> Branded PDF in one click, no formatting work</li>
+            <li><span class="ba-ico ok">✓</span> Share to email or WhatsApp directly from the app</li>
+            <li><span class="ba-ico ok">✓</span> Re-open any PDF to amend - no manual editing</li>
+            <li><span class="ba-ico ok">✓</span> Shared draft queue - pass for review or reassign in one click</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features: icon-forward, hover reveal -->
+  <section id="features">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Features</div>
+        <h2 class="section-heading">Fast, clean, consistent - built for teams.</h2>
+        <p class="section-sub">No Word docs to format, no PDFs to edit by hand, no reports lost in email threads. A shared web-based dashboard your whole team works from - locked templates, a review queue, and a branded PDF in one click.</p>
+      </div>
+      <div class="features-grid">
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-face">
+            <div class="feature-icon-lg">🔒</div>
+            <div class="feature-name">Lock your team's templates</div>
+          </div>
+          <div class="feature-reveal">
+            <div class="feature-reveal-icon">🔒</div>
+            <div class="feature-reveal-title">Lock your team's templates</div>
+            <p class="feature-reveal-desc">Admins define the structure once and publish it to the whole team. Everyone works from the same locked template - no deviations, no missing sections, no improvising in the field.</p>
+          </div>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-face">
+            <div class="feature-icon-lg">📋</div>
+            <div class="feature-name">Build forms your way</div>
+          </div>
+          <div class="feature-reveal">
+            <div class="feature-reveal-icon">📋</div>
+            <div class="feature-reveal-title">Build forms your way</div>
+            <p class="feature-reveal-desc">Add condition ratings, checklists, dropdowns, free-text fields, and toggles. Build the exact form your workflow needs - then lock it so every report matches.</p>
+          </div>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-face">
+            <div class="feature-icon-lg">📂</div>
+            <div class="feature-name">Re-open any PDF to amend</div>
+          </div>
+          <div class="feature-reveal">
+            <div class="feature-reveal-icon">📂</div>
+            <div class="feature-reveal-title">Re-open any PDF to amend</div>
+            <p class="feature-reveal-desc">Upload any Condit PDF and the full form repopulates - every field, photo, and note. Correct a detail, add a new field, or use it as the basis for the next report on the same piece.</p>
+          </div>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-4">
+          <div class="feature-face">
+            <div class="feature-icon-lg">⚡</div>
+            <div class="feature-name">Download or share in one tap</div>
+          </div>
+          <div class="feature-reveal">
+            <div class="feature-reveal-icon">⚡</div>
+            <div class="feature-reveal-title">Download or share in one tap</div>
+            <p class="feature-reveal-desc">One click generates a branded PDF with your logo, colours, and photos embedded. Download it or share it directly to email, WhatsApp, or anywhere else - straight from the app, no extra steps.</p>
+          </div>
+        </div>
+
+        <div class="feature-card reveal" style="grid-column: 1 / -1; min-height: 180px;">
+          <div class="feature-face">
+            <div class="feature-icon-lg">🤝</div>
+            <div class="feature-name">A shared draft queue for the whole team</div>
+          </div>
+          <div class="feature-reveal">
+            <div class="feature-reveal-icon">🤝</div>
+            <div class="feature-reveal-title">A shared draft queue for the whole team</div>
+            <p class="feature-reveal-desc">Every draft sits under its owner. Pass a report to a colleague for review with a note - it locks to them and moves to their queue. They return it, reassign it, or pass it on. Every action is logged with a timestamp so the whole team can see the full history of any report.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Team workflow -->
+  <section class="how-bg">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Team workflow</div>
+        <h2 class="section-heading">A shared draft queue, with clear ownership throughout.</h2>
+        <p class="section-sub">Not a PDF archive. A working queue for reports in progress - each one owned by a specific person, passed for review or reassigned with a note. The whole team sees where every report is at any time.</p>
+      </div>
+      <div class="workflow-layout">
+
+        <div class="workflow-points reveal reveal-delay-1">
+          <div class="workflow-point">
+            <div class="workflow-point-icon">👤</div>
+            <div>
+              <div class="workflow-point-title">Per-person sections, clear at a glance</div>
+              <div class="workflow-point-desc">Every team member has their own section on the drafts page, split into three groups: Drafts, Sent for review, and Reviews. Anyone on the team can see where every report sits at a glance.</div>
+            </div>
+          </div>
+          <div class="workflow-point">
+            <div class="workflow-point-icon">🔁</div>
+            <div>
+              <div class="workflow-point-title">Request review, reassign, or cancel - with notes</div>
+              <div class="workflow-point-desc">Pass a draft with an optional note. It moves to the recipient's Reviews section, locked to them. They return it, pass it on, or reassign it. Only the current holder can open and edit.</div>
+            </div>
+          </div>
+          <div class="workflow-point">
+            <div class="workflow-point-icon">📋</div>
+            <div>
+              <div class="workflow-point-title">Full comment history on every draft</div>
+              <div class="workflow-point-desc">Every action - request, return, reassign - is logged with a timestamp and the note left at the time. The full history is visible to anyone on the team, on any draft.</div>
+            </div>
+          </div>
+          <div class="workflow-point">
+            <div class="workflow-point-icon">🗑</div>
+            <div>
+              <div class="workflow-point-title">Not storing your client data</div>
+              <div class="workflow-point-desc">Drafts are a temporary working space. Finished reports are downloaded as PDFs and kept wherever your team already stores files. Nothing is archived on Condit's servers.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <div class="workflow-mockup-frame">
+            <div class="wm-chrome">
+              <div class="wm-dots">
+                <div class="wm-dot"></div>
+                <div class="wm-dot"></div>
+                <div class="wm-dot"></div>
+              </div>
+              <div class="wm-url">condit.app/drafts</div>
+            </div>
+            <div class="wm-nav">
+              <span class="wm-nav-logo">Condit</span>
+              <span class="wm-nav-link active">Drafts</span>
+              <span class="wm-nav-link">Templates</span>
+              <span class="wm-nav-link">Members</span>
+            </div>
+            <div class="wm-body">
+              <div class="wm-page-title">Drafts</div>
+
+              <!-- Your section -->
+              <div class="wm-person-section">
+                <div class="wm-person-header">
+                  <div class="wm-person-avatar">SC</div>
+                  <span class="wm-person-name">Sarah Clarke <span class="wm-you-tag">you</span></span>
+                </div>
+
+                <div class="wm-subsection">
+                  <div class="wm-subsection-label">Reviews</div>
+                  <!-- Card with expanded comment chain -->
+                  <div class="wm-card" style="flex-direction:column;align-items:stretch;gap:0">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div class="wm-card-body">
+                        <div class="wm-card-title">Rothko, Mark - Untitled (Red)</div>
+                        <div class="wm-card-meta">from J. Harrison</div>
+                      </div>
+                      <div class="wm-card-btns">
+                        <div class="wm-btn">Open</div>
+                        <div class="wm-btn">Return</div>
+                        <div class="wm-btn">Reassign</div>
+                        <div class="wm-btn notes">2 notes</div>
+                      </div>
+                    </div>
+                    <div class="wm-chain">
+                      <div class="wm-chain-item">
+                        <span class="wm-chain-actor">J. Harrison</span>
+                        <span class="wm-chain-time"> · 8 Jun, 09:14</span>
+                        <span> sent for review to S. Clarke</span>
+                        <span class="wm-chain-note">"Please check the surface condition section before we send."</span>
+                      </div>
+                      <div class="wm-chain-item">
+                        <span class="wm-chain-actor">S. Clarke</span>
+                        <span class="wm-chain-time"> · 8 Jun, 11:02</span>
+                        <span> returned to owner</span>
+                        <span class="wm-chain-note">"Added notes on cracking. One more field to fill."</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="wm-subsection">
+                  <div class="wm-subsection-label">Sent for review</div>
+                  <div class="wm-card">
+                    <div class="wm-card-body">
+                      <div class="wm-card-title">Turner, J.M.W. - The Fighting Temeraire</div>
+                      <div class="wm-card-meta">with E. Clarke</div>
+                    </div>
+                    <div class="wm-card-btns">
+                      <div class="wm-btn">Cancel</div>
+                      <div class="wm-btn notes">1 note</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="wm-subsection">
+                  <div class="wm-subsection-label">Drafts</div>
+                  <div class="wm-card">
+                    <div class="wm-card-body">
+                      <div class="wm-card-title">Hockney, David - Pool Series #3</div>
+                      <div class="wm-card-meta">Updated 2h ago</div>
+                    </div>
+                    <div class="wm-card-btns">
+                      <div class="wm-btn">Open</div>
+                      <div class="wm-btn">Request review</div>
+                      <div class="wm-btn">Reassign</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- J. Harrison section (greyed - not yours) -->
+              <div class="wm-person-section">
+                <div class="wm-person-header">
+                  <div class="wm-person-avatar other">JH</div>
+                  <span class="wm-person-name">J. Harrison</span>
+                </div>
+                <div class="wm-subsection">
+                  <div class="wm-subsection-label">Drafts</div>
+                  <div class="wm-card other">
+                    <div class="wm-card-body">
+                      <div class="wm-card-title">Freud, Lucian - Interior with Plant</div>
+                      <div class="wm-card-meta">Updated yesterday</div>
+                    </div>
+                    <div class="wm-card-btns">
+                      <div class="wm-btn">Open</div>
+                      <div class="wm-btn">Request review</div>
+                      <div class="wm-btn">Reassign</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works: step list + animated panel -->
+  <section id="how" class="how-bg">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">How it works</div>
+        <h2 class="section-heading">From blank screen to polished PDF in minutes.</h2>
+        <p class="section-sub">No formatting, no hunting for the right version, no manually editing anything. Admin sets the template once, every person on the team works the same fast, structured way - one click gets the PDF.</p>
+      </div>
+      <div class="how-layout">
+
+        <!-- Step list -->
+        <div class="how-steps" id="how-steps">
+
+          <div class="how-step active" data-step="0">
+            <div class="how-step-ind">
+              <div class="how-step-dot"></div>
+              <div class="how-step-line"></div>
+            </div>
+            <div class="how-step-body">
+              <div class="how-step-title">Pick a locked team template</div>
+              <div class="how-step-desc">Every report starts from an admin-approved template. Your team sees only the forms you've published - no blank pages, no improvisation.</div>
+            </div>
+          </div>
+
+          <div class="how-step" data-step="1">
+            <div class="how-step-ind">
+              <div class="how-step-dot"></div>
+              <div class="how-step-line"></div>
+            </div>
+            <div class="how-step-body">
+              <div class="how-step-title">Build and lock your template</div>
+              <div class="how-step-desc">Add checklists, dropdowns, condition ratings, and free-text fields. Arrange sections to match your workflow exactly, then publish and lock it for the whole team.</div>
+            </div>
+          </div>
+
+          <div class="how-step" data-step="2">
+            <div class="how-step-ind">
+              <div class="how-step-dot"></div>
+              <div class="how-step-line"></div>
+            </div>
+            <div class="how-step-body">
+              <div class="how-step-title">Fill in the guided form</div>
+              <div class="how-step-desc">Work through the structured form during the examination. Tick checklists, select from dropdowns, rate condition, add notes. Batch-upload photos in one action.</div>
+            </div>
+          </div>
+
+          <div class="how-step" data-step="3">
+            <div class="how-step-ind">
+              <div class="how-step-dot"></div>
+              <div class="how-step-line"></div>
+            </div>
+            <div class="how-step-body">
+              <div class="how-step-title">Download, share, or send for team review</div>
+              <div class="how-step-desc">One click generates a branded PDF with your logo and photos embedded. Download it, share directly to email or WhatsApp - or save as a draft and send it to a senior team member for review. They can open it, add notes, reassign it, or pass it back.</div>
+            </div>
+          </div>
+
+          <div class="how-step" data-step="4">
+            <div class="how-step-ind">
+              <div class="how-step-dot"></div>
+              <div class="how-step-line"></div>
+            </div>
+            <div class="how-step-body">
+              <div class="how-step-title">Re-open, amend, or iterate</div>
+              <div class="how-step-desc">Upload any Condit PDF and every field, photo, and note repopulates instantly. Correct a detail, add a new section, or use it as the basis for the next report on the same work.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Animated panel -->
+        <div class="how-panel" id="how-panel">
+          <div class="how-panel-chrome">
+            <div class="how-panel-dots">
+              <div class="how-panel-dot"></div>
+              <div class="how-panel-dot"></div>
+              <div class="how-panel-dot"></div>
+            </div>
+            <div class="how-panel-url">condit.app</div>
+          </div>
+          <div class="how-progress-track">
+            <div id="how-progress"></div>
+          </div>
+          <div class="how-screens">
+
+            <!-- Screen 0: template selection -->
+            <div class="how-screen active" data-screen="0">
+              <div class="hs-tabs">
+                <span class="hs-tab on">Incoming</span>
+                <span class="hs-tab off">Outgoing</span>
+                <span class="hs-tab off">Collection</span>
+              </div>
+              <div class="hs-template-list">
+                <div class="hs-tpl">
+                  <div class="hs-tpl-icon">📄</div>
+                  <div style="flex:1">
+                    <div class="hs-tpl-name">Flatwork</div>
+                    <div class="hs-tpl-sub">Incoming - System template</div>
+                  </div>
+                  <div class="hs-tpl-btn">Start</div>
+                </div>
+                <div class="hs-tpl">
+                  <div class="hs-tpl-icon">🗿</div>
+                  <div style="flex:1">
+                    <div class="hs-tpl-name">Sculpture / 3D</div>
+                    <div class="hs-tpl-sub">Incoming - System template</div>
+                  </div>
+                  <div class="hs-tpl-btn">Start</div>
+                </div>
+                <div class="hs-tpl company">
+                  <div class="hs-tpl-icon">🔒</div>
+                  <div style="flex:1">
+                    <div class="hs-tpl-name">Framing Intake</div>
+                    <div class="hs-tpl-sub">Custom - locked by admin</div>
+                  </div>
+                  <div class="hs-tpl-btn">Start</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 1: template editor with lock -->
+            <div class="how-screen" data-screen="1">
+              <div class="hs-editor-hdr">
+                <span class="hs-editor-title">Edit template</span>
+                <span class="hs-badge">Admin</span>
+              </div>
+              <div class="hs-sections">
+                <div class="hs-sec">Report Information</div>
+                <div class="hs-sec on">Condition Assessment</div>
+                <div class="hs-sec">Examination Notes</div>
+                <div class="hs-sec">Frame &amp; Glazing</div>
+              </div>
+              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Add field type</div>
+              <div class="hs-field-row">
+                <span class="hs-field-pill">Rating</span>
+                <span class="hs-field-pill">Checklist</span>
+                <span class="hs-field-pill">Dropdown</span>
+                <span class="hs-field-pill">Text</span>
+                <span class="hs-field-pill add">+ Add</span>
+              </div>
+              <div class="hs-lock-banner">
+                <span class="hs-lock-icon">🔒</span>
+                Locked - team cannot modify
+              </div>
+              <div class="hs-publish">Publish &amp; lock for team</div>
+            </div>
+
+            <!-- Screen 2: fill in the form - richer field types -->
+            <div class="how-screen" data-screen="2">
+              <div class="hs-form-sec">Condition Assessment</div>
+              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Overall condition</div>
+              <div class="hs-rating">
+                <div class="hs-r-btn sel">Good</div>
+                <div class="hs-r-btn">Fair</div>
+                <div class="hs-r-btn">Poor</div>
+                <div class="hs-r-btn">Critical</div>
+              </div>
+              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Surface defects</div>
+              <div class="hs-checks">
+                <div class="hs-check-row"><div class="hs-check-box ticked">✓</div> Cracking / flaking</div>
+                <div class="hs-check-row"><div class="hs-check-box ticked">✓</div> Surface dirt</div>
+                <div class="hs-check-row"><div class="hs-check-box"></div> Abrasion</div>
+                <div class="hs-check-row"><div class="hs-check-box"></div> Discolouration</div>
+              </div>
+              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Frame condition</div>
+              <div class="hs-dropdown">
+                <span class="hs-dropdown-val">Good - minor scuffs only</span>
+              </div>
+              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Photos</div>
+              <div class="hs-photos">
+                <div class="hs-photo-thumb img">🖼</div>
+                <div class="hs-photo-thumb img">🖼</div>
+                <div class="hs-photo-add">+</div>
+              </div>
+            </div>
+
+            <!-- Screen 3: download PDF -->
+            <div class="how-screen" data-screen="3">
+              <div class="hs-complete">
+                <div class="hs-complete-dot"></div>
+                <div class="hs-complete-text">Report complete</div>
+              </div>
+              <div class="hs-pdf-preview">
+                <div class="hs-pdf-logo">G</div>
+                <div class="hs-pdf-lines">
+                  <div class="hs-pdf-line"></div>
+                  <div class="hs-pdf-line short"></div>
+                  <div class="hs-pdf-line"></div>
+                  <div class="hs-pdf-line short"></div>
+                </div>
+              </div>
+              <div class="hs-dl-btn">
+                <span>&#8964;</span>
+                Download PDF
+              </div>
+            </div>
+
+            <!-- Screen 4: re-upload -->
+            <div class="how-screen" data-screen="4">
+              <div class="hs-dropzone">
+                <span class="hs-dropzone-icon">📎</span>
+                <div class="hs-dropzone-title">Upload a Condit PDF</div>
+                <div class="hs-dropzone-sub">Drop a file or click to browse</div>
+              </div>
+              <div class="hs-recent">
+                <div class="hs-recent-icon">📄</div>
+                <div style="flex:1">
+                  <div class="hs-recent-name">Flatwork - Registrar</div>
+                  <div class="hs-recent-sub">J. Harrison - 07 Jun 2026</div>
+                </div>
+                <div class="hs-recent-open">Open</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Condit -->
+  <section>
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Why Condit</div>
+        <h2 class="section-heading">Purpose-built. Not bolted onto a spreadsheet.</h2>
+        <p class="section-sub">Locked templates, a team review queue, an audit trail, and a branded PDF in one click. Built specifically for condition reporting - no install, works in any browser, ready today.</p>
+      </div>
+      <div class="comparison">
+        <div class="comparison-card reveal reveal-delay-1">
+          <div class="comparison-title">vs spreadsheets</div>
+          <ul class="comparison-list">
+            <li><span class="cross">✕</span> Different format every time</li>
+            <li><span class="cross">✕</span> Fields forgotten or skipped</li>
+            <li><span class="cross">✕</span> No photos in the document</li>
+            <li><span class="cross">✕</span> Version chaos in email and drives</li>
+            <li><span class="cross">✕</span> Can't amend a report after sending</li>
+            <li><span class="cross">✕</span> No team control or standards</li>
+          </ul>
+        </div>
+        <div class="comparison-card highlight reveal reveal-delay-2">
+          <div class="comparison-title gold">With Condit</div>
+          <ul class="comparison-list">
+            <li><span class="check">✓</span> Locked templates, consistent every time</li>
+            <li><span class="check">✓</span> Checklists, dropdowns, ratings built in</li>
+            <li><span class="check">✓</span> Photos embedded in the PDF</li>
+            <li><span class="check">✓</span> Re-open and amend any report from the file</li>
+            <li><span class="check">✓</span> Your logo, your colours</li>
+            <li><span class="check">✓</span> Admin controls the standard, team follows it</li>
+            <li><span class="check">✓</span> Draft review queue for junior and senior teams</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="pricing-bg">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-heading">Simple per-user pricing. Unlimited reports.</h2>
+        <p class="section-sub" style="margin:0 auto">No credit meters. No per-report fees. Pay for the people who use it.</p>
+      </div>
+
+      <div class="pricing-grid-2">
+
+        <div class="pricing-card reveal reveal-delay-1">
+          <div class="pricing-name">Solo</div>
+          <div class="pricing-price"><sup>£</sup><span>20</span></div>
+          <div class="pricing-period">per month</div>
+          <div class="pricing-seats">1 user</div>
+          <ul class="pricing-features">
+            <li>Unlimited condition reports</li>
+            <li>All template types</li>
+            <li>Custom fields - ratings, checklists, dropdowns</li>
+            <li>Branded PDFs with your logo</li>
+            <li>Photo attachments</li>
+            <li>Re-open and amend any past report</li>
+          </ul>
+          <a href="#contact" class="btn-pricing btn-pricing-ghost">Get in touch for a free week trial</a>
+        </div>
+
+        <div class="pricing-card featured reveal reveal-delay-2">
+          <div class="pricing-badge">For teams</div>
+          <div class="pricing-name">Team</div>
+          <div class="pricing-price"><sup>£</sup><span id="team-price-display">17</span></div>
+          <div class="pricing-period">per user / month</div>
+
+          <div class="team-calc">
+            <div class="team-calc-label">How many users?</div>
+            <div class="team-calc-row">
+              <div class="calc-stepper">
+                <button class="calc-btn" id="calc-minus" aria-label="Remove user">&#8722;</button>
+                <input class="calc-num" type="number" id="calc-users" value="10" min="2" max="200" aria-label="Number of users">
+                <button class="calc-btn" id="calc-plus" aria-label="Add user">&#43;</button>
+              </div>
+            </div>
+            <div class="team-calc-result">
+              <div>
+                <div class="calc-per-user"><sup>£</sup><span id="calc-per-user">17</span></div>
+                <div class="calc-per-label">per user / month</div>
+              </div>
+              <div class="calc-total">
+                <div class="calc-total-val">£<span id="calc-total">170</span>/mo</div>
+                <div class="calc-total-label">total</div>
+              </div>
+            </div>
+            <div class="calc-tier-note" id="calc-tier-note">6-15 users: £17/user</div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>Everything in Solo</li>
+            <li>Unlimited users</li>
+            <li>Locked shared templates across the team</li>
+            <li>Admin controls and member management</li>
+            <li>Team branding applied to all reports</li>
+            <li>Team draft queue with review and reassignment</li>
+            <li>Comment history and audit trail on every draft</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="#contact" class="btn-pricing btn-pricing-primary">Get in touch for a free week trial</a>
+        </div>
+
+      </div>
+      <p class="reveal" style="text-align:center; margin-top:28px; font-size:13px; color:var(--ink-3)">
+        Free trial available for all plans. Get in touch to get started.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Get in touch</div>
+        <h2 class="section-heading">Ready to get started?</h2>
+        <p class="section-sub">Tell us about your team and we'll set you up with a trial. Works for galleries, museums, framers, and auction houses.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="reveal reveal-delay-1">
+          <div class="contact-detail">
+            <div class="contact-detail-icon">✉</div>
+            <div>
+              <div class="contact-detail-label">Email</div>
+              <div class="contact-detail-value">hello@condit.co.uk</div>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">⏱</div>
+            <div>
+              <div class="contact-detail-label">Response time</div>
+              <div class="contact-detail-value">We reply within one business day.</div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form reveal reveal-delay-2">
+          <div id="contact-success" class="form-success">
+            Thanks - we'll be in touch shortly.
+          </div>
+          <form id="contact-form">
+            <div class="form-grid">
+              <div class="form-row">
+                <label class="form-label" for="cf-name">Your name</label>
+                <input class="form-input" type="text" id="cf-name" placeholder="Jane Smith" required>
+              </div>
+              <div class="form-row">
+                <label class="form-label" for="cf-gallery">Gallery name</label>
+                <input class="form-input" type="text" id="cf-gallery" placeholder="Smith Gallery / Harrison Framing" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="cf-email">Email</label>
+              <input class="form-input" type="email" id="cf-email" placeholder="jane@smithgallery.com" required>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="cf-size">Team size</label>
+              <select class="form-select" id="cf-size">
+                <option value="">Select...</option>
+                <option>Just me</option>
+                <option>2 - 5 people</option>
+                <option>6 - 15 people</option>
+                <option>More than 15</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="cf-message">Anything else?</label>
+              <textarea class="form-textarea" id="cf-message" placeholder="What types of reports do you produce? Any specific requirements?"></textarea>
+            </div>
+            <button type="submit" class="form-submit">Send enquiry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Condit</div>
+      <div class="footer-copy">© 2026 Condit. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Scroll reveal ----
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ---- How it works stepper ----
+    const HOW_DURATION = 4200;
+    let howCurrent = 0;
+    let howTimer   = null;
+    let howActive  = false;
+
+    function howGoTo(n, restartTimer) {
+      const steps   = document.querySelectorAll('.how-step');
+      const screens = document.querySelectorAll('.how-screen');
+      steps.forEach((s, i)   => s.classList.toggle('active', i === n));
+      screens.forEach((s, i) => s.classList.toggle('active', i === n));
+      howCurrent = n;
+      animateProgress();
+      if (restartTimer) {
+        clearInterval(howTimer);
+        howTimer = setInterval(howNext, HOW_DURATION);
+      }
+    }
+
+    function howNext() {
+      const total = document.querySelectorAll('.how-step').length;
+      howGoTo((howCurrent + 1) % total, false);
+    }
+
+    function animateProgress() {
+      const bar = document.getElementById('how-progress');
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          bar.style.transition = 'width ' + HOW_DURATION + 'ms linear';
+          bar.style.width = '100%';
+        });
+      });
+    }
+
+    function howStart() {
+      if (howActive) return;
+      howActive = true;
+      howGoTo(0, false);
+      howTimer = setInterval(howNext, HOW_DURATION);
+    }
+
+    function howPause() {
+      clearInterval(howTimer);
+      howTimer = null;
+      howActive = false;
+      const bar = document.getElementById('how-progress');
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+    }
+
+    document.querySelectorAll('.how-step').forEach((step, i) => {
+      step.addEventListener('click', () => howGoTo(i, true));
+    });
+
+    const howSection = document.getElementById('how');
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        howStart();
+      } else {
+        howPause();
+      }
+    }, { threshold: 0.2 }).observe(howSection);
+
+    // ---- Team pricing calculator ----
+    const TEAM_TIERS = [
+      { min: 2,  max: 5,        price: 20, label: '2-5 users: £20/user' },
+      { min: 6,  max: 15,       price: 17, label: '6-15 users: £17/user' },
+      { min: 16, max: Infinity, price: 15, label: '16+ users: £15/user' },
+    ];
+
+    function teamTierFor(users) {
+      return TEAM_TIERS.find(t => users >= t.min && users <= t.max) || TEAM_TIERS[TEAM_TIERS.length - 1];
+    }
+
+    function updateCalc() {
+      let users = parseInt(document.getElementById('calc-users').value, 10);
+      if (isNaN(users) || users < 2) users = 2;
+      if (users > 200) users = 200;
+      document.getElementById('calc-users').value = users;
+
+      const tier = teamTierFor(users);
+      document.getElementById('calc-per-user').textContent   = tier.price;
+      document.getElementById('calc-total').textContent      = tier.price * users;
+      document.getElementById('team-price-display').textContent = tier.price;
+      document.getElementById('calc-tier-note').textContent  = tier.label;
+    }
+
+    document.getElementById('calc-minus').addEventListener('click', () => {
+      const el = document.getElementById('calc-users');
+      const v = Math.max(2, parseInt(el.value, 10) - 1);
+      el.value = v; updateCalc();
+    });
+    document.getElementById('calc-plus').addEventListener('click', () => {
+      const el = document.getElementById('calc-users');
+      const v = Math.min(200, parseInt(el.value, 10) + 1);
+      el.value = v; updateCalc();
+    });
+    document.getElementById('calc-users').addEventListener('input', updateCalc);
+
+    updateCalc();
+
+    // ---- Contact form ----
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('contact-success').style.display = 'block';
+    });
+
+    // ---- Mobile nav ----
+    function toggleMobileNav() {
+      const nav = document.querySelector('.nav-links');
+      const isOpen = nav.style.display === 'flex';
+      nav.style.cssText = isOpen
+        ? ''
+        : 'display:flex; flex-direction:column; position:absolute; top:60px; left:0; right:0; background:rgba(12,13,24,0.97); padding:12px 16px 20px; border-bottom:1px solid rgba(255,255,255,0.07); gap:4px;';
+    }
+  </script>
+
+</body>
+</html>
