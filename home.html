@@ -2642,24 +2642,25 @@
           <div id="contact-success" class="form-success">
             Thanks - we'll be in touch shortly.
           </div>
-          <form id="contact-form">
+          <form id="contact-form" name="contact" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="contact">
             <div class="form-grid">
               <div class="form-row">
                 <label class="form-label" for="cf-name">Your name</label>
-                <input class="form-input" type="text" id="cf-name" placeholder="Jane Smith" required>
+                <input class="form-input" type="text" id="cf-name" name="name" placeholder="Jane Smith" required>
               </div>
               <div class="form-row">
                 <label class="form-label" for="cf-gallery">Gallery name</label>
-                <input class="form-input" type="text" id="cf-gallery" placeholder="Smith Gallery / Harrison Framing" required>
+                <input class="form-input" type="text" id="cf-gallery" name="gallery" placeholder="Smith Gallery / Harrison Framing" required>
               </div>
             </div>
             <div class="form-row">
               <label class="form-label" for="cf-email">Email</label>
-              <input class="form-input" type="email" id="cf-email" placeholder="jane@smithgallery.com" required>
+              <input class="form-input" type="email" id="cf-email" name="email" placeholder="jane@smithgallery.com" required>
             </div>
             <div class="form-row">
               <label class="form-label" for="cf-size">Team size</label>
-              <select class="form-select" id="cf-size">
+              <select class="form-select" id="cf-size" name="team-size">
                 <option value="">Select...</option>
                 <option>Just me</option>
                 <option>2 - 5 people</option>
@@ -2669,7 +2670,7 @@
             </div>
             <div class="form-row">
               <label class="form-label" for="cf-message">Anything else?</label>
-              <textarea class="form-textarea" id="cf-message" placeholder="What types of reports do you produce? Any specific requirements?"></textarea>
+              <textarea class="form-textarea" id="cf-message" name="message" placeholder="What types of reports do you produce? Any specific requirements?"></textarea>
             </div>
             <button type="submit" class="form-submit">Send enquiry</button>
           </form>
@@ -2803,10 +2804,23 @@
     updateCalc();
 
     // ---- Contact form ----
-    document.getElementById('contact-form').addEventListener('submit', (e) => {
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      document.getElementById('contact-form').style.display = 'none';
-      document.getElementById('contact-success').style.display = 'block';
+      const form = e.target;
+      const btn = form.querySelector('.form-submit');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      try {
+        const data = new URLSearchParams(new FormData(form));
+        const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data.toString() });
+        if (!res.ok) throw new Error('Network error');
+        form.style.display = 'none';
+        document.getElementById('contact-success').style.display = 'block';
+      } catch {
+        btn.disabled = false;
+        btn.textContent = 'Send enquiry';
+        alert('Something went wrong. Please try again or email hello@condit.co.uk directly.');
+      }
     });
 
     // ---- Mobile nav ----
