@@ -1656,6 +1656,35 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(194,146,58,0.04);
     }
 
+    /* ---- Feature showcase (real screenshots) ---- */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-top: 36px;
+    }
+
+    .showcase-frame {
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06), 0 20px 48px rgba(0,0,0,0.10);
+      background: var(--surface);
+    }
+
+    .showcase-frame img { display: block; width: 100%; height: auto; }
+
+    .showcase-caption {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 720px) {
+      .showcase-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+
     .wm-chrome {
       background: var(--bg-2);
       padding: 10px 14px;
@@ -2013,58 +2042,8 @@
           </div>
           <div class="mockup-url">condit.app</div>
         </div>
-        <div class="mockup-body">
-          <div class="mockup-tabs">
-            <div class="mockup-tab active">Incoming</div>
-            <div class="mockup-tab inactive">Outgoing</div>
-            <div class="mockup-tab inactive">Collection</div>
-          </div>
-          <div class="mockup-section-header">Artwork Information</div>
-          <div class="mockup-fields">
-            <div class="mockup-field">
-              <div class="mockup-label">Artist</div>
-              <div class="mockup-input filled" style="position:relative">
-                <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:10px;color:rgba(12,13,24,0.55)">Sarah Brennan</span>
-              </div>
-            </div>
-            <div class="mockup-field">
-              <div class="mockup-label">Medium</div>
-              <div class="mockup-input" style="position:relative;border-color:rgba(12,13,24,0.12)">
-                <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:10px;color:rgba(12,13,24,0.35)">Oil on canvas</span>
-                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:9px;color:rgba(12,13,24,0.3)">▾</span>
-              </div>
-            </div>
-          </div>
-          <div class="mockup-section-header">Condition Assessment</div>
-          <div class="mockup-fields">
-            <div class="mockup-field">
-              <div class="mockup-label">Overall condition</div>
-              <div class="mockup-rating">
-                <div class="mockup-rating-btn good">Good</div>
-                <div class="mockup-rating-btn">Fair</div>
-                <div class="mockup-rating-btn">Poor</div>
-                <div class="mockup-rating-btn">Critical</div>
-              </div>
-            </div>
-            <div class="mockup-field" style="margin-top:4px">
-              <div class="mockup-label">Surface defects</div>
-              <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px">
-                <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(12,13,24,0.65)">
-                  <div style="width:11px;height:11px;border-radius:2px;background:rgba(194,146,58,0.15);border:1px solid rgba(194,146,58,0.4);display:flex;align-items:center;justify-content:center;font-size:7px;color:#c2923a;flex-shrink:0">✓</div>
-                  Cracking
-                </div>
-                <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(12,13,24,0.38)">
-                  <div style="width:11px;height:11px;border-radius:2px;background:#fff;border:1px solid rgba(12,13,24,0.14);flex-shrink:0"></div>
-                  Abrasion
-                </div>
-                <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(12,13,24,0.38)">
-                  <div style="width:11px;height:11px;border-radius:2px;background:#fff;border:1px solid rgba(12,13,24,0.14);flex-shrink:0"></div>
-                  Discolouration
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mockup-download">Download PDF</div>
+        <div class="mockup-body" style="padding:0">
+          <img src="assets/screens/report-form.png" alt="Creating a condition report in Condit" style="display:block;width:100%;height:auto">
         </div>
       </div>
     </div>
@@ -2245,116 +2224,35 @@
               </div>
               <div class="wm-url">condit.app/drafts</div>
             </div>
-            <div class="wm-nav">
-              <span class="wm-nav-logo">Condit</span>
-              <span class="wm-nav-link active">Drafts</span>
-              <span class="wm-nav-link">Templates</span>
-              <span class="wm-nav-link">Members</span>
-            </div>
-            <div class="wm-body">
-              <div class="wm-page-title">Drafts</div>
-
-              <!-- Your section -->
-              <div class="wm-person-section">
-                <div class="wm-person-header">
-                  <div class="wm-person-avatar">SC</div>
-                  <span class="wm-person-name">Sarah Clarke <span class="wm-you-tag">you</span></span>
-                </div>
-
-                <div class="wm-subsection">
-                  <div class="wm-subsection-label">Reviews</div>
-                  <!-- Card with expanded comment chain -->
-                  <div class="wm-card" style="flex-direction:column;align-items:stretch;gap:0">
-                    <div style="display:flex;align-items:center;gap:8px">
-                      <div class="wm-card-body">
-                        <div class="wm-card-title">Rothko, Mark - Untitled (Red)</div>
-                        <div class="wm-card-meta">from J. Harrison</div>
-                      </div>
-                      <div class="wm-card-btns">
-                        <div class="wm-btn">Open</div>
-                        <div class="wm-btn">Approve</div>
-                        <div class="wm-btn">Comment</div>
-                        <div class="wm-btn notes">3 notes</div>
-                      </div>
-                    </div>
-                    <div class="wm-chain">
-                      <div class="wm-chain-item">
-                        <span class="wm-chain-actor">J. Harrison</span>
-                        <span class="wm-chain-time"> · 8 Jun, 09:14</span>
-                        <span> sent for review to S. Clarke</span>
-                        <span class="wm-chain-note">"Please check the surface condition section before we send."</span>
-                      </div>
-                      <div class="wm-chain-item" style="margin-left:16px;padding-left:9px;border-left:2px solid rgba(0,0,0,0.08)">
-                        <span class="wm-chain-actor">S. Clarke</span>
-                        <span class="wm-chain-time"> · 8 Jun, 10:41</span>
-                        <span> replied</span>
-                        <span class="wm-chain-note">"Done - craquelure noted under Artwork Condition."</span>
-                      </div>
-                      <div class="wm-chain-item">
-                        <span class="wm-chain-actor">S. Clarke</span>
-                        <span class="wm-chain-time"> · 8 Jun, 11:02</span>
-                        <span> ✓ approved this draft</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="wm-subsection">
-                  <div class="wm-subsection-label">Sent for review</div>
-                  <div class="wm-card">
-                    <div class="wm-card-body">
-                      <div class="wm-card-title">Turner, J.M.W. - The Fighting Temeraire</div>
-                      <div class="wm-card-meta">with E. Clarke</div>
-                    </div>
-                    <div class="wm-card-btns">
-                      <div class="wm-btn">Cancel</div>
-                      <div class="wm-btn notes">1 note</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="wm-subsection">
-                  <div class="wm-subsection-label">Drafts</div>
-                  <div class="wm-card">
-                    <div class="wm-card-body">
-                      <div class="wm-card-title">Hockney, David - Pool Series #3</div>
-                      <div class="wm-card-meta">Updated 2h ago</div>
-                    </div>
-                    <div class="wm-card-btns">
-                      <div class="wm-btn">Open</div>
-                      <div class="wm-btn">Request review</div>
-                      <div class="wm-btn">Reassign</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- J. Harrison section (greyed - not yours) -->
-              <div class="wm-person-section">
-                <div class="wm-person-header">
-                  <div class="wm-person-avatar other">JH</div>
-                  <span class="wm-person-name">J. Harrison</span>
-                </div>
-                <div class="wm-subsection">
-                  <div class="wm-subsection-label">Drafts</div>
-                  <div class="wm-card other">
-                    <div class="wm-card-body">
-                      <div class="wm-card-title">Freud, Lucian - Interior with Plant</div>
-                      <div class="wm-card-meta">Updated yesterday</div>
-                    </div>
-                    <div class="wm-card-btns">
-                      <div class="wm-btn">Open</div>
-                      <div class="wm-btn">Request review</div>
-                      <div class="wm-btn">Reassign</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+            <img src="assets/screens/drafts.png" alt="The team drafts and review queue in Condit" style="display:block;width:100%;height:auto">
           </div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature showcase: real screenshots -->
+  <section>
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">In the app</div>
+        <h2 class="section-heading">Built for the way condition reports actually work.</h2>
+        <p class="section-sub">Pin numbered comments to a photo or draw straight on it, and build fully customisable templates your team works from - all in the browser.</p>
+      </div>
+      <div class="showcase-grid">
+        <div class="showcase-item reveal reveal-delay-1">
+          <div class="showcase-frame">
+            <img src="assets/screens/annotator.jpg" alt="Tagging and drawing on a photo in Condit" loading="lazy">
+          </div>
+          <div class="showcase-caption">Tag and draw directly on photos, with comments listed alongside.</div>
+        </div>
+        <div class="showcase-item reveal reveal-delay-2">
+          <div class="showcase-frame">
+            <img src="assets/screens/template-editor.png" alt="Building a custom template in Condit" loading="lazy">
+          </div>
+          <div class="showcase-caption">Build and lock down your own templates from a set of field types.</div>
+        </div>
       </div>
     </div>
   </section>
