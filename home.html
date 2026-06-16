@@ -1659,7 +1659,7 @@
     /* ---- Feature showcase (real screenshots) ---- */
     .showcase-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 28px;
       margin-top: 36px;
     }
@@ -2160,12 +2160,12 @@
         <div class="feature-card reveal reveal-delay-2">
           <div class="feature-face">
             <div class="feature-icon-lg">🤝</div>
-            <div class="feature-name">Team workflow</div>
+            <div class="feature-name">Team workflows &amp; task management</div>
           </div>
           <div class="feature-reveal">
             <div class="feature-reveal-icon">🤝</div>
-            <div class="feature-reveal-title">Team workflow</div>
-            <p class="feature-reveal-desc">Create, review, approve and manage condition reports across your team from one place.</p>
+            <div class="feature-reveal-title">Team workflows &amp; task management</div>
+            <p class="feature-reveal-desc">Create, review, approve and manage condition reports across your team from one place - and track the tasks behind them with assignments, priorities and due dates.</p>
           </div>
         </div>
 
@@ -2206,6 +2206,13 @@
             </div>
           </div>
           <div class="workflow-point">
+            <div class="workflow-point-icon">✅</div>
+            <div>
+              <div class="workflow-point-title">A task board built into your reporting</div>
+              <div class="workflow-point-desc">Spin up tasks for yourself or the team, set priority and due dates, and watch them move across a kanban board or table. Each task links to the reports it concerns and carries its own comment thread and @mentions, so follow-ups never get lost.</div>
+            </div>
+          </div>
+          <div class="workflow-point">
             <div class="workflow-point-icon">🗑</div>
             <div>
               <div class="workflow-point-title">Not storing your client data</div>
@@ -2238,7 +2245,7 @@
       <div class="reveal">
         <div class="section-label">In the app</div>
         <h2 class="section-heading">Built for the way condition reports actually work.</h2>
-        <p class="section-sub">Pin numbered comments to a photo or draw straight on it, and build fully customisable templates your team works from - all in the browser.</p>
+        <p class="section-sub">Pin numbered comments to a photo or draw straight on it, build fully customisable templates your team works from, and keep the team's tasks moving - all in the browser.</p>
       </div>
       <div class="showcase-grid">
         <div class="showcase-item reveal reveal-delay-1">
@@ -2252,6 +2259,12 @@
             <img src="assets/screens/template-editor.png" alt="Building a custom template in Condit" loading="lazy">
           </div>
           <div class="showcase-caption">Build and lock down your own templates from a set of field types.</div>
+        </div>
+        <div class="showcase-item reveal reveal-delay-3">
+          <div class="showcase-frame">
+            <img src="assets/screens/task-manager.png" alt="The team task board in Condit" loading="lazy">
+          </div>
+          <div class="showcase-caption">Assign, prioritise and track tasks on a board - linked to the reports they relate to.</div>
         </div>
       </div>
     </div>
