@@ -1393,6 +1393,9 @@
       letter-spacing: 0.01em;
     }
     .footer-copy { font-size: 12px; color: var(--ink-3); }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+    .footer-links a { font-size: 12px; color: var(--ink-3); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--gold); }
 
     /* ---- Scroll reveal ---- */
 
@@ -2687,6 +2690,13 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-logo">Condit</div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="terms.html">Terms</a>
+        <a href="dpa.html">Data Processing</a>
+        <a href="legal.html">Legal</a>
+      </div>
       <div class="footer-copy">© 2026 Condit. All rights reserved.</div>
     </div>
   </footer>
