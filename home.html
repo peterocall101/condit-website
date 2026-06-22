@@ -78,7 +78,7 @@
     .nav-inner {
       max-width: 1100px;
       margin: 0 auto;
-      height: 60px;
+      height: 78px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -92,24 +92,14 @@
     }
 
     .nav-logo-img {
-      width: 54px;
-      height: 54px;
+      width: 70px;
+      height: 70px;
       object-fit: contain;
       flex-shrink: 0;
     }
 
     .nav-logo {
       mix-blend-mode: multiply;
-    }
-
-    .nav-logo-text {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: 0.01em;
-      line-height: 1;
-      margin-left: -5px;
     }
 
     .nav-links {
@@ -1387,10 +1377,15 @@
     }
 
     .footer-logo {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 20px; font-weight: 600;
-      color: var(--ink);
-      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      mix-blend-mode: multiply;
+    }
+    .footer-logo img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      display: block;
     }
     .footer-copy { font-size: 12px; color: var(--ink-3); }
     .footer-links { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
@@ -1987,7 +1982,6 @@
     <div class="nav-inner">
       <a href="#" class="nav-logo">
         <img src="assets/logo.png" alt="Condit" class="nav-logo-img">
-        <span class="nav-logo-text">Condit</span>
       </a>
       <ul class="nav-links">
         <li><a href="#features">Features</a></li>
@@ -2009,10 +2003,6 @@
     <div class="hero-glow"></div>
     <div class="hero-inner">
       <div class="hero-text">
-        <div class="hero-eyebrow">
-          <span class="hero-eyebrow-dot"></span>
-          Your team's home for condition reports
-        </div>
         <h1>Professional condition reports. <em>In minutes.</em></h1>
         <p class="hero-sub">Create, review and share condition reports from a single platform. Built for galleries, museums, auction houses, framers and collection professionals.</p>
         <div class="hero-actions">
@@ -2689,7 +2679,7 @@
   <!-- Footer -->
   <footer>
     <div class="footer-inner">
-      <div class="footer-logo">Condit</div>
+      <div class="footer-logo"><img src="assets/logo.png" alt="Condit"></div>
       <div class="footer-links">
         <a href="privacy.html">Privacy</a>
         <a href="cookies.html">Cookies</a>
@@ -2843,7 +2833,7 @@
       const isOpen = nav.style.display === 'flex';
       nav.style.cssText = isOpen
         ? ''
-        : 'display:flex; flex-direction:column; position:absolute; top:60px; left:0; right:0; background:rgba(12,13,24,0.97); padding:12px 16px 20px; border-bottom:1px solid rgba(255,255,255,0.07); gap:4px;';
+        : 'display:flex; flex-direction:column; position:absolute; top:78px; left:0; right:0; background:rgba(12,13,24,0.97); padding:12px 16px 20px; border-bottom:1px solid rgba(255,255,255,0.07); gap:4px;';
     }
   </script>
 
