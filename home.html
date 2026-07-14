@@ -16,50 +16,77 @@
     "logo": "https://condit.co.uk/assets/logo.png"
   }
   </script>
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #f8f7f4;
-      --bg-2:      #f0eeea;
-      --surface:   #ffffff;
-      --surface-2: #faf9f7;
-      --border:    rgba(14,15,20,0.09);
-      --border-2:  rgba(14,15,20,0.14);
-      --gold:      #c2923a;
-      --gold-light:#d4a854;
-      --gold-pale: rgba(194,146,58,0.10);
-      --ink:       #0c0d18;
-      --ink-2:     rgba(12,13,24,0.60);
-      --ink-3:     rgba(12,13,24,0.38);
-      --r:         10px;
-      --r-lg:      16px;
-    }
-
-    /* How-panel represents the actual dark app — keep its vars dark */
-    .how-panel {
-      --bg:        #0c0d18;
-      --bg-2:      #111220;
-      --surface:   #161724;
-      --surface-2: #1d1e30;
-      --border:    rgba(255,255,255,0.07);
-      --border-2:  rgba(255,255,255,0.12);
-      --ink:       #f0f0f2;
-      --ink-2:     rgba(240,240,242,0.65);
-      --ink-3:     rgba(240,240,242,0.38);
+      --paper:    oklch(99.4% 0.002 90);
+      --ink:      oklch(19% 0.012 270);
+      --ink-70:   oklch(38% 0.01 270);
+      --ink-50:   oklch(52% 0.008 270);
+      --line:     oklch(19% 0.012 270 / 0.16);
+      --line-mid: oklch(19% 0.012 270 / 0.34);
+      --gold:     oklch(68% 0.115 75);
+      --gold-deep:oklch(50% 0.10 78);
+      --paper-warm: oklch(96.5% 0.004 85);
+      --white-70: rgba(255,255,255,0.74);
+      --white-50: rgba(255,255,255,0.55);
+      --nav-h: 72px;
+      --pad: clamp(20px, 4vw, 48px);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
+      background: var(--paper);
       color: var(--ink);
-      font-family: 'Inter', system-ui, sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
+      font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      padding-top: var(--nav-h);
+    }
+
+    ::selection { background: var(--gold); color: var(--ink); }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding-left: var(--pad);
+      padding-right: var(--pad);
+    }
+
+    h1, h2, h3 { text-wrap: balance; }
+
+    a:focus-visible, button:focus-visible, input:focus-visible,
+    select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid var(--gold-deep);
+      outline-offset: 2px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--ink);
+      color: #fff;
+      padding: 10px 18px;
+      z-index: 300;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .skip-link:focus { left: 0; }
+
+    /* ---- Display type ---- */
+
+    .display {
+      font-stretch: 122%;
+      font-weight: 740;
+      letter-spacing: -0.025em;
+      line-height: 1.02;
     }
 
     /* ---- Nav ---- */
@@ -68,734 +95,494 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      padding: 0 24px;
-      background: rgba(248,247,244,0.94);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      background: var(--paper);
+      border-bottom: 1px solid var(--ink);
     }
 
     .nav-inner {
-      max-width: 1100px;
+      max-width: 1240px;
       margin: 0 auto;
-      height: 78px;
+      padding: 0 var(--pad);
+      height: var(--nav-h);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
     }
 
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 0;
       text-decoration: none;
-    }
-
-    .nav-logo-img {
-      width: 70px;
-      height: 70px;
-      object-fit: contain;
+      mix-blend-mode: multiply;
       flex-shrink: 0;
     }
 
-    .nav-logo {
-      mix-blend-mode: multiply;
+    .nav-logo img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      display: block;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: clamp(16px, 3vw, 36px);
       list-style: none;
     }
 
-    .nav-links a {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-3);
+    .nav-links a:not(.nav-cta):not(.nav-login) {
+      font-size: 14px;
+      font-weight: 560;
+      letter-spacing: 0.01em;
+      color: var(--ink);
       text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: color 0.15s;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s;
     }
 
-    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:not(.nav-cta):not(.nav-login):hover { border-bottom-color: var(--gold); }
+
+    .nav-login {
+      display: inline-block;
+      background: transparent;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 620;
+      text-decoration: none;
+      padding: 10px 20px;
+      border: 1px solid var(--ink);
+      transition: background-color 0.18s, color 0.18s;
+    }
+
+    .nav-login:hover { background: var(--ink); color: var(--paper); }
 
     .nav-cta {
-      background: var(--gold);
-      color: #fff !important;
-      font-weight: 600 !important;
-      padding: 7px 16px !important;
-      border-radius: 7px !important;
+      display: inline-block;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 14px;
+      font-weight: 620;
+      text-decoration: none;
+      padding: 11px 22px;
+      transition: background-color 0.18s, color 0.18s;
     }
 
-    .nav-cta:hover { opacity: 0.85; color: #fff !important; }
+    .nav-cta:hover { background: var(--gold); color: var(--ink); }
 
-    .nav-mobile-toggle {
+    .nav-toggle {
       display: none;
       background: none;
-      border: none;
-      color: var(--ink-2);
+      border: 1px solid var(--ink);
+      color: var(--ink);
       cursor: pointer;
-      padding: 4px;
+      padding: 9px 10px;
+      line-height: 0;
     }
 
-    /* ---- Sections ---- */
+    .nav-mobile {
+      display: none;
+      background: var(--paper);
+      border-bottom: 1px solid var(--ink);
+    }
 
-    section { padding: 100px 24px; }
+    .nav-mobile.open { display: block; }
 
-    .container { max-width: 1100px; margin: 0 auto; }
+    .nav-mobile a {
+      display: block;
+      padding: 16px var(--pad);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .nav-mobile a:hover { background: var(--paper-warm); }
 
     /* ---- Hero ---- */
 
-    .hero {
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 120px 24px 80px;
-      position: relative;
-      overflow: hidden;
-    }
+    .hero { padding: clamp(48px, 8vh, 96px) 0 0; }
 
-    /* Animated dot grid background */
-    .hero-grid-bg {
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(12,13,24,0.055) 1px, transparent 1px);
-      background-size: 32px 32px;
-      mask-image: radial-gradient(ellipse 90% 90% at 50% 40%, black 20%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 40%, black 20%, transparent 100%);
-      animation: grid-drift 18s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes grid-drift {
-      from { background-position: 0 0; }
-      to   { background-position: 32px 32px; }
-    }
-
-    .hero-glow {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 50% -5%, rgba(194,146,58,0.09) 0%, transparent 60%),
-        radial-gradient(ellipse 35% 35% at 78% 55%, rgba(194,146,58,0.04) 0%, transparent 50%);
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
+    .hero-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+      gap: clamp(36px, 5vw, 72px);
       align-items: center;
-      position: relative;
-    }
-
-    .hero-logo-mark {
-      margin-bottom: -10px;
-      animation: fadeUp 0.3s ease-out both;
-      mix-blend-mode: multiply;
-    }
-
-    .hero-logo-mark img {
-      width: 130px;
-      height: 130px;
-      object-fit: contain;
-      display: block;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 20px;
-    }
-
-    .hero-eyebrow-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.45; transform: scale(0.65); }
+      margin-bottom: clamp(36px, 5vw, 56px);
     }
 
     .hero h1 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(42px, 5.5vw, 70px);
-      font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.01em;
-      margin-bottom: 20px;
-      text-wrap: balance;
+      font-size: clamp(38px, 4.6vw, 64px);
+      margin-bottom: 22px;
     }
 
-    .hero h1 em {
-      font-style: normal;
-      color: var(--gold);
-    }
+    .hero h1 .tick { color: var(--gold-deep); }
 
     .hero-sub {
-      font-size: 17px;
-      color: var(--ink-2);
-      line-height: 1.65;
-      margin-bottom: 36px;
-      max-width: 460px;
+      font-size: clamp(16px, 1.4vw, 18px);
+      line-height: 1.6;
+      color: var(--ink-70);
+      max-width: 48ch;
+      margin-bottom: 32px;
     }
+
+    .hero-sub strong { color: var(--ink); font-weight: 620; }
 
     .hero-actions {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-bottom: 40px;
     }
-
-    /* Credibility strip */
-    .hero-strip {
-      display: flex;
-      align-items: stretch;
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      background: rgba(255,255,255,0.02);
-      overflow: hidden;
-      max-width: 400px;
-    }
-
-    .hero-strip-item {
-      flex: 1;
-      padding: 11px 14px;
-      text-align: center;
-    }
-
-    .hero-strip-sep {
-      width: 1px;
-      background: var(--border);
-      flex-shrink: 0;
-    }
-
-    .hero-strip-val {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-
-    .hero-strip-lbl {
-      display: block;
-      font-size: 10px;
-      color: var(--ink-3);
-      line-height: 1.3;
-      margin-top: 2px;
-    }
-
-    /* ---- Buttons ---- */
 
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 22px;
-      border-radius: var(--r);
+      gap: 10px;
+      padding: 15px 28px;
       font-family: inherit;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 620;
+      letter-spacing: 0.01em;
       cursor: pointer;
       text-decoration: none;
-      border: none;
-      transition: opacity 0.15s, transform 0.15s;
+      border: 1px solid var(--ink);
+      transition: background-color 0.18s, color 0.18s;
     }
 
-    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
+    .btn-primary { background: var(--ink); color: var(--paper); }
+    .btn-primary:hover { background: var(--gold); color: var(--ink); border-color: var(--ink); }
 
-    .btn-primary { background: var(--gold); color: #fff; }
+    .btn-ghost { background: transparent; color: var(--ink); }
+    .btn-ghost:hover { background: var(--ink); color: var(--paper); }
 
-    .btn-ghost {
-      background: transparent;
-      color: var(--ink-2);
-      border: 1px solid var(--border-2);
-    }
+    /* Facts rule ---- */
 
-    .btn-ghost:hover { color: var(--ink); border-color: rgba(12,13,24,0.25); }
-
-    /* ---- Hero app mockup ---- */
-
-    .mockup {
-      position: relative;
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: var(--r-lg);
-      overflow: hidden;
-      box-shadow:
-        0 4px 16px rgba(0,0,0,0.08),
-        0 24px 64px rgba(0,0,0,0.18),
-        0 0 0 1px rgba(0,0,0,0.06);
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-8px); }
-    }
-
-    .mockup-bar {
-      background: var(--bg-2);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .mockup-dots { display: flex; gap: 6px; }
-
-    .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .mockup-dot:nth-child(1) { background: rgba(255,95,87,0.6); }
-    .mockup-dot:nth-child(2) { background: rgba(255,189,46,0.6); }
-    .mockup-dot:nth-child(3) { background: rgba(39,201,63,0.6); }
-
-    .mockup-url {
-      flex: 1;
-      background: rgba(255,255,255,0.05);
-      border-radius: 5px;
-      padding: 4px 10px;
-      font-size: 11px;
-      color: var(--ink-3);
-      font-family: monospace;
-    }
-
-    .mockup-body { padding: 16px; }
-    .mockup-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
-
-    .mockup-tab { padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 600; }
-    .mockup-tab.active { background: var(--bg); color: var(--ink); }
-    .mockup-tab.inactive { color: var(--ink-3); }
-
-    .mockup-section-header {
-      background: var(--bg);
-      border-radius: 6px;
-      padding: 8px 12px;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
-    }
-
-    .mockup-fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-    .mockup-field { display: flex; flex-direction: column; gap: 4px; }
-
-    .mockup-label {
-      font-size: 9px;
-      font-weight: 600;
-      color: var(--ink-3);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .mockup-input {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      height: 26px;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .mockup-input.filled { border-color: rgba(12,13,24,0.15); }
-
-    .mockup-rating { display: flex; gap: 4px; }
-
-    .mockup-rating-btn {
-      flex: 1; height: 24px; border-radius: 4px;
-      background: var(--bg); border: 1px solid var(--border);
-      font-size: 9px; display: flex; align-items: center;
-      justify-content: center; font-weight: 600; color: var(--ink-3);
-    }
-
-    .mockup-rating-btn.good {
-      background: rgba(21,128,61,0.1);
-      border-color: rgba(21,128,61,0.3);
-      color: #15803d;
-    }
-
-    .mockup-download {
-      background: var(--gold);
-      border-radius: 6px;
-      padding: 8px 12px;
-      font-size: 10px;
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    /* ---- Section labels ---- */
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 12px;
-    }
-
-    .section-heading {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(32px, 4vw, 50px);
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.12;
-      margin-bottom: 16px;
-      text-wrap: balance;
-    }
-
-    .section-sub {
-      font-size: 16px;
-      color: var(--ink-2);
-      line-height: 1.65;
-      max-width: 560px;
-    }
-
-    /* ---- Problem: before/after split ---- */
-
-    .problem {
-      background: var(--bg-2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .ba-card {
+    .facts {
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      margin-top: 48px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      overflow: hidden;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
     }
 
-    .ba-side { padding: 36px 32px; }
-
-    .ba-side.ba-after {
-      background: linear-gradient(135deg, rgba(194,146,58,0.04) 0%, var(--surface) 60%);
-      border-left: 1px solid var(--border);
-    }
-
-    .ba-side-label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--ink-3);
-      margin-bottom: 24px;
-    }
-
-    .ba-side-label.gold { color: var(--gold); }
-
-    .ba-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .ba-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--ink-2);
-      line-height: 1.45;
-    }
-
-    .ba-ico {
-      flex-shrink: 0;
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 700;
-      margin-top: 1px;
-    }
-
-    .ba-ico.x  { background: rgba(248,113,113,0.12); color: #f87171; }
-    .ba-ico.ok { background: rgba(74,222,128,0.13);  color: #4ade80; }
-
-    .ba-divider {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      padding: 20px 0;
-    }
-
-    .ba-divider::before {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0; left: 50%;
-      width: 1px;
-      background: var(--border);
-    }
-
-    .ba-vs {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: var(--bg-2);
-      border: 1px solid var(--border-2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 700;
-      color: var(--ink-3);
-      z-index: 1;
-      letter-spacing: 0.02em;
-    }
-
-    /* ---- Features: icon-forward hover reveal ---- */
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-top: 56px;
-    }
-
-    .feature-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      position: relative;
-      overflow: hidden;
-      min-height: 240px;
-      transition: border-color 0.25s;
-    }
-
-    .feature-card:hover { border-color: rgba(194,146,58,0.3); }
-
-    /* Default face: icon + title centered */
-    .feature-face {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 32px;
-      transition: opacity 0.22s;
-    }
-
-    .feature-card:hover .feature-face { opacity: 0; }
-
-    .feature-icon-lg {
-      font-size: 44px;
-      line-height: 1;
-    }
-
-    .feature-name {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      text-align: center;
-      color: var(--ink);
-    }
-
-    /* Hover reveal: slides up from below */
-    .feature-reveal {
-      position: absolute;
-      inset: 0;
-      background: var(--surface-2);
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transform: translateY(100%);
-      transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .feature-card:hover .feature-reveal { transform: translateY(0); }
-
-    .feature-reveal::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(194,146,58,0.4), transparent);
-    }
-
-    .feature-reveal-icon { font-size: 22px; line-height: 1; }
-
-    .feature-reveal-title {
+    .fact {
+      padding: 18px 24px 20px;
       font-size: 15px;
-      font-weight: 600;
+      line-height: 1.45;
+      color: var(--ink-70);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .fact + .fact { border-left: 1px solid var(--line); }
+
+    .fact strong {
+      display: block;
       color: var(--ink);
-      letter-spacing: -0.01em;
+      font-weight: 700;
+      font-stretch: 112%;
+      font-size: 17px;
+      margin-bottom: 2px;
     }
 
-    .feature-reveal-desc {
-      font-size: 14px;
-      color: var(--ink-2);
+    /* ---- Plates (screenshot figures) ---- */
+
+    .plate {
+      border: 1px solid var(--ink);
+      background: #fff;
+    }
+
+    .plate img { display: block; width: 100%; height: auto; }
+
+    .plate-caption {
+      border-top: 1px solid var(--ink);
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink-70);
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+    }
+
+    .plate-caption .fig {
+      font-weight: 700;
+      font-stretch: 112%;
+      color: var(--ink);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .plate-narrow {
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Marketing renders: shown bare, no plate frame */
+    .panel-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* ---- Sections ---- */
+
+    section { padding: clamp(72px, 10vw, 130px) 0 0; }
+
+    .section-head {
+      border-top: 1px solid var(--ink);
+      padding-top: 22px;
+      margin-bottom: clamp(36px, 5vw, 56px);
+      display: grid;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 24px 64px;
+      align-items: start;
+    }
+
+    .section-head h2 {
+      font-size: clamp(30px, 4.2vw, 54px);
+    }
+
+    .section-head p {
+      font-size: 16px;
       line-height: 1.65;
+      color: var(--ink-70);
+      max-width: 46ch;
+      padding-top: 8px;
     }
 
-    /* ---- How it works: step list + animated panel ---- */
+    /* ---- Ledger comparison ---- */
 
-    .how-bg {
-      background: var(--bg-2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+    .ledger { border: 1px solid var(--ink); }
+
+    .ledger-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
+
+    .ledger-row + .ledger-row { border-top: 1px solid var(--line); }
+
+    .ledger-head { border-bottom: 1px solid var(--ink); }
+
+    .ledger-head .ledger-cell {
+      font-size: 14px;
+      font-weight: 700;
+      font-stretch: 112%;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      padding: 14px 24px;
+    }
+
+    .ledger-cell {
+      padding: 17px 24px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .ledger-cell.old { color: var(--ink-50); }
+    .ledger-cell.new { color: var(--ink); border-left: 1px solid var(--line); }
+    .ledger-head .ledger-cell.new { border-left: 1px solid var(--line); }
+
+    .ledger-cell .mark { font-weight: 700; margin-right: 10px; }
+    .ledger-cell.old .mark { color: var(--ink-50); }
+    .ledger-cell.new .mark { color: var(--gold-deep); }
+
+    .ledger-tag {
+      display: none;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* ---- Features index ---- */
+
+    .index { border-bottom: 1px solid var(--ink); }
+
+    .index-row {
+      display: grid;
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr) 48px;
+      gap: 12px 48px;
+      align-items: baseline;
+      padding: 26px 20px;
+      margin: 0 -20px;
+      border-top: 1px solid var(--line);
+      transition: background-color 0.22s, color 0.22s;
+    }
+
+    .index > .index-row:first-child { border-top: 1px solid var(--ink); }
+
+    .index-title {
+      font-size: clamp(21px, 2.6vw, 30px);
+      font-stretch: 118%;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.1;
+    }
+
+    .index-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-70);
+      transition: color 0.22s;
+    }
+
+    .index-mark {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gold);
+      text-align: right;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.22s, transform 0.22s;
+    }
+
+    @media (hover: hover) {
+      .index-row:hover { background: var(--ink); color: var(--paper); }
+      .index-row:hover .index-desc { color: var(--white-70); }
+      .index-row:hover .index-mark { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ---- Workflow ---- */
+
+    .workflow-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(36px, 5vw, 72px);
+      align-items: start;
+    }
+
+    .workflow-point {
+      padding: 20px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .workflow-point:first-child { border-top: 1px solid var(--ink); }
+    .workflow-point:last-child { border-bottom: 1px solid var(--ink); }
+
+    .workflow-point h3 {
+      font-size: 17px;
+      font-weight: 700;
+      font-stretch: 110%;
+      letter-spacing: -0.005em;
+      margin-bottom: 5px;
+    }
+
+    .workflow-point p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-70);
+    }
+
+    .workflow-plate {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+      max-width: 500px;
+      justify-self: end;
+      width: 100%;
+    }
+
+    /* ---- Figures grid ---- */
+
+    .figures-wide { margin-bottom: 28px; }
+
+    .figures-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* ---- How it works ---- */
 
     .how-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: clamp(36px, 5vw, 72px);
       align-items: start;
-      margin-top: 64px;
     }
-
-    .how-steps { display: flex; flex-direction: column; }
 
     .how-step {
-      display: flex;
+      display: grid;
+      grid-template-columns: 44px 1fr;
       gap: 16px;
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
       cursor: pointer;
-      opacity: 0.4;
-      transition: opacity 0.3s;
+      opacity: 0.42;
+      transition: opacity 0.25s;
     }
 
+    .how-step:first-child { border-top: 1px solid var(--ink); }
+    .how-step:last-child { border-bottom: 1px solid var(--ink); }
     .how-step.active { opacity: 1; }
 
-    .how-step-ind {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex-shrink: 0;
-      width: 22px;
-      padding-top: 3px;
-    }
-
-    .how-step-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      border: 2px solid rgba(12,13,24,0.2);
-      background: transparent;
-      flex-shrink: 0;
-      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
-    }
-
-    .how-step.active .how-step-dot {
-      background: var(--gold);
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(194,146,58,0.2);
-    }
-
-    .how-step-line {
-      flex: 1;
-      width: 1px;
-      background: var(--border);
-      margin-top: 6px;
-      min-height: 28px;
-    }
-
-    .how-step:last-child .how-step-line { display: none; }
-
-    .how-step-body { padding-bottom: 28px; flex: 1; }
-    .how-step:last-child .how-step-body { padding-bottom: 0; }
-
-    .how-step-title {
-      font-size: 15px;
-      font-weight: 600;
+    .how-step-num {
+      font-size: 20px;
+      font-weight: 740;
+      font-stretch: 118%;
+      line-height: 1.25;
       color: var(--ink);
-      line-height: 1.3;
-      margin-bottom: 6px;
-      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
     }
 
-    .how-step-desc {
-      font-size: 13px;
-      color: var(--ink-2);
+    .how-step.active .how-step-num { color: var(--gold-deep); }
+
+    .how-step h3 {
+      font-size: 16px;
+      font-weight: 700;
+      font-stretch: 108%;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .how-step p {
+      font-size: 14px;
       line-height: 1.6;
+      color: var(--ink-70);
     }
 
     /* Panel */
+
     .how-panel {
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: var(--r-lg);
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 16px 48px rgba(0,0,0,0.15);
+      border: 1px solid var(--ink);
+      background: #fff;
       position: sticky;
-      top: 80px;
+      top: calc(var(--nav-h) + 24px);
     }
 
     .how-panel-chrome {
-      background: var(--bg-2);
-      padding: 10px 16px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid var(--border);
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--ink);
+      font-size: 12px;
+      font-weight: 620;
+      letter-spacing: 0.02em;
+      color: var(--ink-70);
     }
 
-    .how-panel-dots { display: flex; gap: 6px; }
-    .how-panel-dot { width: 9px; height: 9px; border-radius: 50%; }
-    .how-panel-dot:nth-child(1) { background: rgba(255,95,87,0.55); }
-    .how-panel-dot:nth-child(2) { background: rgba(255,189,46,0.55); }
-    .how-panel-dot:nth-child(3) { background: rgba(39,201,63,0.55); }
+    .how-progress-track { height: 3px; background: var(--line); }
 
-    .how-panel-url {
-      flex: 1;
-      background: rgba(255,255,255,0.04);
-      border-radius: 5px;
-      padding: 4px 10px;
-      font-size: 11px;
-      color: var(--ink-3);
-      font-family: monospace;
-    }
-
-    .how-progress-track {
-      height: 2px;
-      background: var(--border);
-    }
-
-    #how-progress {
-      height: 100%;
-      background: var(--gold);
-      width: 0%;
-    }
+    #how-progress { height: 100%; background: var(--gold); width: 0%; }
 
     .how-screens {
       position: relative;
-      height: 340px;
+      height: 360px;
+      background: var(--paper-warm);
     }
 
     .how-screen {
       position: absolute;
       inset: 0;
-      padding: 20px;
+      padding: 22px;
       opacity: 0;
-      transform: translateX(14px);
+      transform: translateX(12px);
       transition: opacity 0.4s ease, transform 0.4s ease;
       pointer-events: none;
       overflow: hidden;
@@ -807,18 +594,21 @@
       pointer-events: auto;
     }
 
-    /* Screen 0: template selection */
-    .hs-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
+    /* Mini app-screen elements (match the real app's look) */
 
-    .hs-tab {
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
+    .hs-tabs {
+      display: flex;
+      gap: 4px;
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 5px 6px;
+      margin-bottom: 14px;
+      border-radius: 8px;
     }
 
-    .hs-tab.on { background: var(--bg); color: var(--ink); }
-    .hs-tab.off { color: var(--ink-3); }
+    .hs-tab { padding: 5px 13px; border-radius: 6px; font-size: 11px; font-weight: 620; }
+    .hs-tab.on { background: var(--ink); color: var(--gold); }
+    .hs-tab.off { color: var(--ink-50); }
 
     .hs-template-list { display: flex; flex-direction: column; gap: 8px; }
 
@@ -826,185 +616,149 @@
       display: flex;
       align-items: center;
       gap: 11px;
-      background: var(--bg);
-      border: 1px solid var(--border);
+      background: #fff;
+      border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 11px 13px;
     }
 
-    .hs-tpl.company {
-      border-color: rgba(194,146,58,0.2);
-      background: rgba(194,146,58,0.04);
-    }
+    .hs-tpl.company { border-color: var(--gold); }
 
-    .hs-tpl-icon { font-size: 17px; flex-shrink: 0; }
-    .hs-tpl-name { font-size: 12px; font-weight: 600; color: var(--ink); flex: 1; }
-    .hs-tpl-sub { font-size: 10px; color: var(--ink-3); margin-top: 2px; }
+    .hs-tpl-name { font-size: 12px; font-weight: 620; color: var(--ink); }
+    .hs-tpl-sub { font-size: 10px; color: var(--ink-50); margin-top: 2px; }
 
     .hs-tpl-btn {
       font-size: 10px; font-weight: 700;
-      color: var(--gold);
-      background: var(--gold-pale);
-      padding: 4px 10px;
+      color: var(--ink);
+      border: 1px solid var(--line-mid);
+      background: var(--paper-warm);
+      padding: 5px 11px;
       border-radius: 5px;
       flex-shrink: 0;
     }
 
-    /* Screen 1: template editor */
-    .hs-editor-hdr {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .hs-sec-bar {
+      font-size: 10px; font-weight: 700;
+      color: var(--gold);
+      background: var(--ink);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 7px 11px;
+      border-radius: 5px;
       margin-bottom: 12px;
     }
 
-    .hs-editor-title { font-size: 13px; font-weight: 600; color: var(--ink); }
-
-    .hs-badge {
+    .hs-lbl {
       font-size: 9px; font-weight: 700;
+      color: var(--ink-50);
       text-transform: uppercase; letter-spacing: 0.06em;
-      color: var(--gold); background: var(--gold-pale);
-      padding: 2px 7px; border-radius: 20px;
-    }
-
-    .hs-sections { display: flex; flex-direction: column; gap: 3px; margin-bottom: 14px; }
-
-    .hs-sec {
-      padding: 7px 10px;
-      border-radius: 6px;
-      font-size: 11px; font-weight: 500;
-      color: var(--ink-3);
-    }
-
-    .hs-sec.on { background: var(--bg); color: var(--ink); font-weight: 600; }
-
-    .hs-field-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
-
-    .hs-field-pill {
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 10px; font-weight: 600;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--ink-2);
-    }
-
-    .hs-field-pill.add {
-      border-color: rgba(194,146,58,0.3);
-      color: var(--gold);
-      background: var(--gold-pale);
-    }
-
-    .hs-publish {
-      background: var(--gold);
-      border-radius: 7px;
-      padding: 9px 12px;
-      font-size: 11px; font-weight: 700;
-      color: var(--bg);
-      text-align: center;
-    }
-
-    /* Screen 2: fill form */
-    .hs-form-sec {
-      font-size: 10px; font-weight: 700;
-      color: var(--gold);
-      text-transform: uppercase; letter-spacing: 0.08em;
-      background: var(--bg);
-      padding: 6px 10px;
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-
-    .hs-form-fields {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-      margin-bottom: 10px;
-    }
-
-    .hs-form-field { display: flex; flex-direction: column; gap: 3px; }
-
-    .hs-form-lbl {
-      font-size: 9px; font-weight: 600;
-      color: var(--ink-3);
-      text-transform: uppercase; letter-spacing: 0.06em;
-    }
-
-    .hs-form-val {
-      background: var(--bg);
-      border: 1px solid rgba(255,255,255,0.13);
-      border-radius: 5px;
-      height: 24px;
-      position: relative; overflow: hidden;
-    }
-
-    .hs-form-val::after {
-      content: '';
-      position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
-      width: 60%; height: 5px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 3px;
+      margin-bottom: 4px;
     }
 
     .hs-rating { display: flex; gap: 4px; margin-bottom: 10px; }
 
     .hs-r-btn {
-      flex: 1; height: 22px; border-radius: 4px;
-      background: var(--bg); border: 1px solid var(--border);
-      font-size: 9px; font-weight: 600; color: var(--ink-3);
+      flex: 1; height: 24px; border-radius: 5px;
+      background: #fff; border: 1px solid var(--line);
+      font-size: 9px; font-weight: 620; color: var(--ink-50);
       display: flex; align-items: center; justify-content: center;
     }
 
     .hs-r-btn.sel {
-      background: rgba(39,174,96,0.15);
-      border-color: rgba(39,174,96,0.3);
-      color: #4ade80;
+      background: rgba(42,138,82,0.10);
+      border-color: rgba(42,138,82,0.4);
+      color: #1e7a46;
     }
+
+    .hs-checks { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+
+    .hs-check-row { display: flex; align-items: center; gap: 7px; font-size: 10px; color: var(--ink-70); }
+
+    .hs-check-box {
+      width: 13px; height: 13px; border-radius: 3px;
+      background: #fff;
+      border: 1px solid var(--line-mid); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px;
+    }
+
+    .hs-check-box.ticked { background: var(--gold); border-color: var(--gold-deep); color: var(--ink); }
+
+    .hs-dropdown {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      height: 26px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .hs-dropdown::after {
+      content: '▾';
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      font-size: 9px; color: var(--ink-50);
+    }
+
+    .hs-dropdown-val {
+      position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+      font-size: 10px; color: var(--ink-70);
+    }
+
+    .hs-input {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      height: 26px;
+    }
+
+    .hs-dropzone {
+      border: 2px dashed var(--line-mid);
+      border-radius: 8px;
+      padding: 26px 20px;
+      text-align: center;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+
+    .hs-dropzone-icon { font-size: 26px; margin-bottom: 6px; display: block; }
+    .hs-dropzone-title { font-size: 13px; font-weight: 620; color: var(--ink); margin-bottom: 3px; }
+    .hs-dropzone-sub { font-size: 11px; color: var(--ink-50); }
 
     .hs-photos { display: flex; gap: 6px; }
 
     .hs-photo-thumb {
       width: 44px; height: 44px;
       border-radius: 5px;
-      background: var(--bg); border: 1px solid var(--border);
+      background: #fff; border: 1px solid var(--line);
       display: flex; align-items: center; justify-content: center;
       font-size: 16px; flex-shrink: 0;
     }
 
-    .hs-photo-thumb.img {
-      background: rgba(194,146,58,0.1);
-      border-color: rgba(194,146,58,0.2);
-    }
+    .hs-photo-thumb.img { border-color: var(--gold); background: rgba(194,146,58,0.07); }
 
     .hs-photo-add {
       width: 44px; height: 44px;
       border-radius: 5px;
-      border: 1px dashed rgba(255,255,255,0.13);
+      border: 1px dashed var(--line-mid);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; color: var(--ink-3); flex-shrink: 0;
+      font-size: 16px; color: var(--ink-50); flex-shrink: 0;
     }
 
-    /* Screen 3: download */
     .hs-complete {
       display: flex; align-items: center; gap: 8px;
-      background: rgba(74,222,128,0.07);
-      border: 1px solid rgba(74,222,128,0.18);
-      border-radius: 7px;
+      background: rgba(42,138,82,0.07);
+      border: 1px solid rgba(42,138,82,0.25);
+      border-radius: 6px;
       padding: 9px 12px;
       margin-bottom: 12px;
+      font-size: 12px; font-weight: 620; color: #1e7a46;
     }
 
-    .hs-complete-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%; background: #4ade80; flex-shrink: 0;
-    }
-
-    .hs-complete-text { font-size: 12px; font-weight: 600; color: #4ade80; }
+    .hs-complete-dot { width: 8px; height: 8px; border-radius: 50%; background: #1e7a46; flex-shrink: 0; }
 
     .hs-pdf-preview {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
       padding: 12px;
       margin-bottom: 12px;
       display: flex; gap: 10px;
@@ -1013,367 +767,306 @@
     .hs-pdf-logo {
       width: 32px; height: 32px;
       border-radius: 5px;
-      background: var(--gold-pale);
-      border: 1px solid rgba(194,146,58,0.2);
+      background: var(--ink);
+      color: var(--gold);
       flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700; color: var(--gold);
+      font-size: 12px; font-weight: 700;
     }
 
-    .hs-pdf-lines {
-      flex: 1;
-      display: flex; flex-direction: column; gap: 5px; justify-content: center;
-    }
-
-    .hs-pdf-line {
-      height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px;
-    }
-
+    .hs-pdf-lines { flex: 1; display: flex; flex-direction: column; gap: 5px; justify-content: center; }
+    .hs-pdf-line { height: 5px; background: var(--line); border-radius: 3px; }
     .hs-pdf-line.short { width: 55%; }
 
-    .hs-dl-btn {
+    .hs-btn {
       background: var(--gold);
-      border-radius: 7px;
+      border-radius: 6px;
       padding: 10px 12px;
-      font-size: 11px; font-weight: 700; color: var(--bg);
+      font-size: 11px; font-weight: 700; color: var(--ink);
       text-align: center;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
     }
-
-    /* Screen 4: re-upload */
-    .hs-dropzone {
-      border: 2px dashed rgba(255,255,255,0.11);
-      border-radius: 10px;
-      padding: 28px 20px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .hs-dropzone-icon { font-size: 30px; margin-bottom: 8px; display: block; }
-    .hs-dropzone-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
-    .hs-dropzone-sub { font-size: 11px; color: var(--ink-3); }
 
     .hs-recent {
       display: flex; align-items: center; gap: 9px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 7px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
       padding: 9px 11px;
     }
 
-    .hs-recent-icon { font-size: 16px; flex-shrink: 0; }
-    .hs-recent-name { font-size: 11px; font-weight: 600; color: var(--ink); flex: 1; }
-    .hs-recent-sub { font-size: 10px; color: var(--ink-3); }
-    .hs-recent-open { font-size: 10px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+    .hs-recent-name { font-size: 11px; font-weight: 620; color: var(--ink); }
+    .hs-recent-sub { font-size: 10px; color: var(--ink-50); margin-top: 1px; }
+    .hs-recent-open { font-size: 10px; font-weight: 700; color: var(--gold-deep); flex-shrink: 0; }
 
-    /* Dropdown field mockup */
-    .hs-dropdown {
-      background: var(--bg);
-      border: 1px solid rgba(255,255,255,0.13);
-      border-radius: 5px;
-      height: 24px;
-      position: relative; overflow: hidden;
-      margin-bottom: 8px;
+    /* ---- Pricing (ink drench) ---- */
+
+    .pricing {
+      margin-top: clamp(72px, 10vw, 130px);
+      background: var(--ink);
+      color: var(--paper);
+      padding: clamp(64px, 8vw, 110px) 0 clamp(72px, 9vw, 120px);
     }
 
-    .hs-dropdown::after {
-      content: '▾';
-      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-      font-size: 9px; color: var(--ink-3); pointer-events: none;
-    }
+    .pricing .section-head { border-top-color: var(--paper); margin-bottom: clamp(40px, 5vw, 64px); }
+    .pricing .section-head p { color: var(--white-70); }
 
-    .hs-dropdown-val {
-      position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
-      font-size: 10px; color: var(--ink-2);
-    }
-
-    /* Checkbox group mockup */
-    .hs-checks { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
-
-    .hs-check-row {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 10px; color: var(--ink-2);
-    }
-
-    .hs-check-box {
-      width: 13px; height: 13px; border-radius: 3px;
-      border: 1px solid var(--border-2); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 8px;
-    }
-
-    .hs-check-box.ticked {
-      background: rgba(194,146,58,0.2);
-      border-color: rgba(194,146,58,0.4);
-      color: var(--gold);
-    }
-
-    /* Lock badge on template */
-    .hs-lock-banner {
-      display: flex; align-items: center; gap: 7px;
-      background: rgba(194,146,58,0.08);
-      border: 1px solid rgba(194,146,58,0.2);
-      border-radius: 7px;
-      padding: 8px 11px;
-      margin-bottom: 12px;
-      font-size: 11px; color: var(--gold); font-weight: 600;
-    }
-
-    .hs-lock-icon { font-size: 13px; flex-shrink: 0; }
-
-    /* ---- Why Condit ---- */
-
-    .comparison {
+    .pricing-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 56px;
+      border: 1px solid var(--white-50);
     }
 
-    .comparison-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 32px;
+    .plan { padding: clamp(28px, 4vw, 48px); }
+    .plan + .plan { border-left: 1px solid var(--white-50); }
+
+    .plan-name {
+      font-size: 15px;
+      font-weight: 700;
+      font-stretch: 112%;
+      letter-spacing: 0.02em;
+      margin-bottom: 18px;
     }
 
-    .comparison-card.highlight {
-      border-color: rgba(194,146,58,0.3);
-      background: linear-gradient(135deg, var(--surface) 0%, rgba(194,146,58,0.04) 100%);
+    .plan-name .plan-badge {
+      font-size: 12px;
+      font-weight: 620;
+      color: var(--gold);
+      margin-left: 10px;
     }
 
-    .comparison-title {
-      font-size: 13px; font-weight: 700;
-      color: var(--ink-3);
-      text-transform: uppercase; letter-spacing: 0.06em;
-      margin-bottom: 20px;
+    .plan-price {
+      font-size: clamp(52px, 6vw, 80px);
+      font-stretch: 118%;
+      font-weight: 740;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
     }
 
-    .comparison-title.gold { color: var(--gold); }
+    .plan-price sup { font-size: 0.45em; font-weight: 620; vertical-align: 0.65em; letter-spacing: 0; }
 
-    .comparison-list {
+    .plan-period { font-size: 14px; color: var(--white-70); margin: 8px 0 26px; }
+
+    .plan-features {
       list-style: none;
-      display: flex; flex-direction: column; gap: 12px;
+      display: flex; flex-direction: column; gap: 10px;
+      border-top: 1px solid var(--white-50);
+      padding-top: 22px;
+      margin-bottom: 30px;
     }
 
-    .comparison-list li {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 14px; color: var(--ink-2); line-height: 1.5;
+    .plan-features li {
+      font-size: 15px;
+      color: var(--white-70);
+      line-height: 1.5;
     }
 
-    .check {
-      flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
-      background: rgba(74,222,128,0.15); color: #4ade80;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; margin-top: 1px;
+    .plan-features li::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 700;
+      margin-right: 12px;
     }
 
-    .cross {
-      flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
-      background: rgba(248,113,113,0.12); color: #f87171;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; margin-top: 1px;
+    .btn-plan {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: var(--ink);
+      border: none;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.18s, color 0.18s;
     }
 
-    /* ---- Pricing ---- */
+    .btn-plan:hover { background: var(--paper); color: var(--ink); }
 
-    .pricing-bg {
-      background: var(--bg-2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+    .btn-plan.quiet {
+      background: transparent;
+      color: var(--paper);
+      border: 1px solid var(--white-50);
     }
 
+    .btn-plan.quiet:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
 
-    .pricing-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 32px;
-      position: relative;
-      transition: transform 0.2s;
+    /* Calculator */
+
+    .team-calc {
+      border-top: 1px solid var(--white-50);
+      padding-top: 22px;
+      margin-bottom: 26px;
     }
 
-    .pricing-card:hover { transform: translateY(-3px); }
-
-    .pricing-card.featured {
-      border-color: rgba(194,146,58,0.4);
-      background: linear-gradient(160deg, rgba(194,146,58,0.06) 0%, var(--surface) 40%);
-      transform: translateY(-6px);
-    }
-
-    .pricing-card.featured:hover { transform: translateY(-9px); }
-
-    .pricing-badge {
-      position: absolute;
-      top: -12px; left: 50%;
-      transform: translateX(-50%);
-      background: var(--gold); color: #fff;
-      font-size: 10px; font-weight: 700;
-      padding: 3px 12px; border-radius: 20px;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      white-space: nowrap;
-    }
-
-    .pricing-name {
-      font-size: 13px; font-weight: 700;
-      color: var(--ink-3);
-      text-transform: uppercase; letter-spacing: 0.06em;
+    .team-calc-label {
+      font-size: 13px;
+      font-weight: 700;
       margin-bottom: 12px;
     }
 
-    .pricing-price {
-      font-size: 42px; font-weight: 700;
-      letter-spacing: -0.04em; line-height: 1;
-      margin-bottom: 4px;
+    .calc-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .pricing-price sup {
-      font-size: 20px; font-weight: 600;
-      vertical-align: super; letter-spacing: 0;
+    .calc-stepper {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--white-50);
     }
 
-    .pricing-period {
-      font-size: 12px; color: var(--ink-3);
-      margin-bottom: 20px;
-    }
-
-    .pricing-seats {
-      font-size: 13px; color: var(--ink-2);
-      background: var(--bg);
-      border-radius: 6px;
-      padding: 8px 12px;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .pricing-features {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 10px;
-      margin-bottom: 28px;
-    }
-
-    .pricing-features li {
-      display: flex; align-items: center; gap: 9px;
-      font-size: 13px; color: var(--ink-2);
-    }
-
-    .pricing-features li::before {
-      content: '';
-      width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
-      background: rgba(74,222,128,0.15);
-      background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 7L6 10L11 4' stroke='%234ade80' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    }
-
-    .btn-pricing {
-      width: 100%;
-      padding: 12px;
-      border-radius: var(--r);
-      font-family: inherit; font-size: 14px; font-weight: 600;
-      cursor: pointer;
-      text-align: center; text-decoration: none; display: block;
-      transition: opacity 0.15s, transform 0.15s;
+    .calc-btn {
+      width: 40px;
+      height: 40px;
+      background: transparent;
       border: none;
+      color: var(--paper);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background-color 0.15s;
     }
 
-    .btn-pricing:hover { opacity: 0.85; transform: translateY(-1px); }
-    .btn-pricing-primary { background: var(--gold); color: #fff; }
-    .btn-pricing-ghost {
-      background: transparent; color: var(--ink-2);
-      border: 1px solid var(--border-2);
+    .calc-btn:hover { background: rgba(255,255,255,0.12); }
+
+    .calc-num {
+      width: 56px;
+      text-align: center;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--paper);
+      background: transparent;
+      border: none;
+      border-left: 1px solid var(--white-50);
+      border-right: 1px solid var(--white-50);
+      outline: none;
+      height: 40px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .calc-num::-webkit-inner-spin-button,
+    .calc-num::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .calc-num { -moz-appearance: textfield; appearance: textfield; }
+
+    .calc-out { text-align: right; font-variant-numeric: tabular-nums; }
+
+    .calc-total-val { font-size: 22px; font-weight: 740; font-stretch: 112%; letter-spacing: -0.01em; }
+    .calc-total-val .gold { color: var(--gold); }
+    .calc-tier-note { font-size: 12px; color: var(--white-70); margin-top: 3px; }
+
+    .pricing-note {
+      margin-top: 26px;
+      font-size: 14px;
+      color: var(--white-70);
     }
 
     /* ---- Contact ---- */
 
-    .contact-grid {
+    .contact-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(36px, 5vw, 80px);
       align-items: start;
-      margin-top: 56px;
     }
 
-    .contact-detail {
-      display: flex; align-items: flex-start; gap: 12px;
-      margin-bottom: 24px;
+    .contact-fact {
+      border-top: 1px solid var(--line);
+      padding: 18px 0;
     }
 
-    .contact-detail-icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      background: var(--gold-pale);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
-    }
+    .contact-fact:first-child { border-top: 1px solid var(--ink); }
+    .contact-fact:last-of-type { border-bottom: 1px solid var(--ink); }
 
-    .contact-detail-label {
-      font-size: 11px; font-weight: 700;
-      color: var(--ink-3);
-      text-transform: uppercase; letter-spacing: 0.06em;
+    .contact-fact-label {
+      font-size: 13px;
+      font-weight: 700;
+      font-stretch: 110%;
       margin-bottom: 3px;
     }
 
-    .contact-detail-value { font-size: 14px; color: var(--ink-2); }
+    .contact-fact-value { font-size: 15px; color: var(--ink-70); }
+    .contact-fact-value a { color: var(--ink); font-weight: 620; text-decoration-color: var(--gold); text-underline-offset: 3px; }
 
-    .contact-form {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 32px;
-    }
-
-    .form-row { margin-bottom: 18px; }
+    .form-row { margin-bottom: 22px; }
 
     .form-label {
       display: block;
-      font-size: 11px; font-weight: 600;
-      color: var(--ink-3);
-      text-transform: uppercase; letter-spacing: 0.06em;
+      font-size: 13px;
+      font-weight: 700;
       margin-bottom: 7px;
     }
 
     .form-input, .form-textarea, .form-select {
       width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border-2);
-      border-radius: var(--r);
+      background: #fff;
+      border: 1px solid var(--line-mid);
+      border-radius: 0;
       color: var(--ink);
-      font-family: inherit; font-size: 14px;
-      padding: 10px 13px;
+      font-family: inherit;
+      font-size: 15px;
+      padding: 12px 14px;
       outline: none;
       transition: border-color 0.15s;
       appearance: none;
     }
 
-    .form-input:focus, .form-textarea:focus, .form-select:focus {
-      border-color: rgba(194,146,58,0.5);
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23121316' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
     }
 
-    .form-input::placeholder, .form-textarea::placeholder { color: var(--ink-3); }
-    .form-textarea { resize: vertical; min-height: 100px; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--ink); }
+
+    .form-input::placeholder, .form-textarea::placeholder { color: oklch(45% 0.008 270); }
+    .form-textarea { resize: vertical; min-height: 110px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 
     .form-submit {
-      width: 100%; padding: 12px;
-      background: var(--gold); color: #fff;
-      border: none; border-radius: var(--r);
-      font-family: inherit; font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: opacity 0.15s; margin-top: 4px;
+      width: 100%;
+      padding: 16px;
+      background: var(--ink);
+      color: var(--paper);
+      border: 1px solid var(--ink);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.18s, color 0.18s;
+      margin-top: 4px;
     }
 
-    .form-submit:hover { opacity: 0.85; }
+    .form-submit:hover { background: var(--gold); color: var(--ink); }
+    .form-submit:disabled { opacity: 0.6; cursor: default; }
 
     .form-success {
-      display: none; text-align: center;
-      padding: 20px; color: #4ade80; font-size: 15px;
+      display: none;
+      border: 1px solid var(--ink);
+      padding: 24px;
+      font-size: 16px;
+      font-weight: 620;
     }
+
+    .form-success .mark { color: var(--gold-deep); font-weight: 700; margin-right: 8px; }
 
     /* ---- Footer ---- */
 
-    footer { border-top: 1px solid var(--border); padding: 40px 24px; }
-
-    .footer-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
+    footer {
+      margin-top: clamp(80px, 11vw, 140px);
+      border-top: 1px solid var(--ink);
+      padding: clamp(32px, 5vw, 56px) 0 36px;
     }
 
     .footer-logo {
@@ -1381,1313 +1074,654 @@
       align-items: center;
       mix-blend-mode: multiply;
     }
+
     .footer-logo img {
-      width: 56px;
-      height: 56px;
+      width: 72px;
+      height: 72px;
       object-fit: contain;
       display: block;
     }
-    .footer-copy { font-size: 12px; color: var(--ink-3); }
-    .footer-links { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
-    .footer-links a { font-size: 12px; color: var(--ink-3); text-decoration: none; transition: color 0.15s; }
-    .footer-links a:hover { color: var(--gold); }
 
-    /* ---- Scroll reveal ---- */
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-
-    /* ---- Light theme for panel screens (matches actual app) ---- */
-
-    .how-screens { background: #edeae4; }
-    .how-screen  { background: #edeae4; }
-
-    .hs-tabs { background: #fff; border-radius: 8px; padding: 6px 8px; gap: 4px; margin-bottom: 12px; }
-    .hs-tab.on  { background: #2d0f0f; color: #c2923a; }
-    .hs-tab.off { background: transparent; color: #888; }
-
-    .hs-tpl { background: #fff; border-color: #ddd; }
-    .hs-tpl-name { color: #1a1a1a; }
-    .hs-tpl-sub  { color: #999; }
-    .hs-tpl-btn  { background: #f0ede8; color: #2d0f0f; border: 1px solid #ddd; font-size:10px; font-weight:700; padding:4px 9px; border-radius:5px; flex-shrink:0; }
-    .hs-tpl.company { background: rgba(194,146,58,0.06); border-color: rgba(194,146,58,0.3); }
-
-    .hs-editor-title { color: #1a1a1a; }
-    .hs-badge { background: rgba(194,146,58,0.15); color: #9a7228; }
-    .hs-sec { color: #999; }
-    .hs-sec.on { background: #fff; color: #1a1a1a; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-    .hs-field-pill { background: #fff; border-color: #ddd; color: #555; }
-    .hs-field-pill.add { background: rgba(194,146,58,0.1); border-color: rgba(194,146,58,0.35); color: #9a7228; }
-    .hs-lock-banner { background: rgba(194,146,58,0.1); border-color: rgba(194,146,58,0.3); color: #9a7228; }
-    .hs-publish { background: #c2923a; color: #fff; border-radius: 7px; }
-
-    .hs-form-sec { background: #2d0f0f; color: #c2923a; }
-    .hs-form-lbl { color: #999; }
-    .hs-form-val { background: #fff; border-color: #ddd; }
-    .hs-form-val::after { background: #e0dbd5; }
-
-    .hs-rating { gap: 4px; }
-    .hs-r-btn { background: #fff; border-color: #ddd; color: #888; }
-    .hs-r-btn.sel { background: rgba(74,174,96,0.1); border-color: rgba(74,174,96,0.35); color: #2a8a52; }
-
-    .hs-check-row { color: #555; }
-    .hs-check-box { background: #fff; border-color: #ccc; }
-    .hs-check-box.ticked { background: rgba(194,146,58,0.15); border-color: #c2923a; color: #9a7228; }
-
-    .hs-dropdown { background: #fff; border-color: #ddd; }
-    .hs-dropdown-val { color: #444; }
-    .hs-dropdown::after { color: #999; }
-
-    .hs-photo-thumb { background: #fff; border-color: #ddd; }
-    .hs-photo-thumb.img { background: rgba(194,146,58,0.08); border-color: rgba(194,146,58,0.25); }
-    .hs-photo-add { border-color: #ccc; color: #bbb; }
-
-    .hs-complete { background: rgba(74,174,96,0.08); border-color: rgba(74,174,96,0.22); }
-    .hs-complete-text { color: #2a8a52; }
-    .hs-complete-dot { background: #2a8a52; }
-    .hs-pdf-preview { background: #fff; border-color: #ddd; }
-    .hs-pdf-line { background: #ddd; }
-    .hs-dl-btn { background: #c2923a; color: #fff; }
-
-    .hs-dropzone { border-color: #ccc; }
-    .hs-dropzone-title { color: #1a1a1a; }
-    .hs-dropzone-sub { color: #999; }
-    .hs-recent { background: #fff; border-color: #ddd; }
-    .hs-recent-name { color: #1a1a1a; }
-    .hs-recent-sub { color: #999; }
-    .hs-recent-open { color: #9a7228; }
-
-    /* ---- Pricing calculator ---- */
-
-    .pricing-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .team-calc {
-      border-top: 1px solid var(--border);
-      padding-top: 20px;
-      margin-top: 4px;
-      margin-bottom: 20px;
-    }
-
-    .team-calc-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--ink-3);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 10px;
-    }
-
-    .team-calc-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .calc-stepper {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      border: 1px solid var(--border-2);
-      border-radius: 8px;
-      overflow: hidden;
-      background: var(--bg);
-    }
-
-    .calc-btn {
-      width: 32px;
-      height: 32px;
-      background: transparent;
+    .footer-rule {
       border: none;
-      color: var(--ink-2);
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      transition: background 0.15s;
-      flex-shrink: 0;
+      border-top: 1px solid var(--line);
+      margin: clamp(24px, 3vw, 36px) 0 24px;
     }
 
-    .calc-btn:hover { background: rgba(255,255,255,0.06); }
-
-    .calc-num {
-      width: 40px;
-      text-align: center;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--ink);
-      background: transparent;
-      border: none;
-      border-left: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      outline: none;
-      padding: 0;
-      height: 32px;
-    }
-
-    .calc-num::-webkit-inner-spin-button,
-    .calc-num::-webkit-outer-spin-button { -webkit-appearance: none; }
-
-    .team-calc-result {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
+    .footer-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
-    .calc-per-user {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--ink);
-      letter-spacing: -0.03em;
-    }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 
-    .calc-per-user sup {
+    .footer-links a {
       font-size: 13px;
-      font-weight: 600;
-      vertical-align: super;
-      letter-spacing: 0;
+      color: var(--ink-70);
+      text-decoration: none;
     }
 
-    .calc-per-label {
-      font-size: 11px;
-      color: var(--ink-3);
-      line-height: 1.3;
+    .footer-links a:hover { color: var(--gold-deep); }
+
+    .footer-copy { font-size: 13px; color: var(--ink-70); }
+
+    /* ---- Scroll reveal (only when JS present; content visible by default) ---- */
+
+    html.js .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease-out, transform 0.55s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
-    .calc-total {
-      text-align: right;
+    html.js .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Hero entrance */
+    html.js .rise {
+      opacity: 0;
+      transform: translateY(26px);
+      animation: rise 0.7s cubic-bezier(0.19, 1, 0.22, 1) both;
     }
 
-    .calc-total-val {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--gold);
-    }
+    html.js .rise-1 { animation-delay: 0.05s; }
+    html.js .rise-2 { animation-delay: 0.16s; }
+    html.js .rise-3 { animation-delay: 0.27s; }
+    html.js .rise-4 { animation-delay: 0.38s; }
 
-    .calc-total-label {
-      font-size: 10px;
-      color: var(--ink-3);
-    }
-
-    .calc-tier-note {
-      font-size: 11px;
-      color: var(--ink-3);
-      margin-top: 8px;
-      text-align: center;
-    }
-
-    /* ---- Team workflow section ---- */
-
-    .workflow-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-      margin-top: 56px;
-    }
-
-    .workflow-points {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .workflow-point {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-
-    .workflow-point-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: var(--gold-pale);
-      border: 1px solid rgba(194,146,58,0.18);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 17px;
-    }
-
-    .workflow-point-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 3px;
-      letter-spacing: -0.01em;
-    }
-
-    .workflow-point-desc {
-      font-size: 13px;
-      color: var(--ink-2);
-      line-height: 1.6;
-    }
-
-    .workflow-mockup-frame {
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      border-radius: var(--r-lg);
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(194,146,58,0.04);
-    }
-
-    /* ---- Feature showcase (real screenshots) ---- */
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 28px;
-      margin-top: 36px;
-    }
-
-    .showcase-frame {
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06), 0 20px 48px rgba(0,0,0,0.10);
-      background: var(--surface);
-    }
-
-    .showcase-frame img { display: block; width: 100%; height: auto; }
-
-    .showcase-caption {
-      margin-top: 14px;
-      font-size: 14px;
-      color: var(--ink-2);
-      line-height: 1.5;
-    }
-
-    @media (max-width: 720px) {
-      .showcase-grid { grid-template-columns: 1fr; gap: 32px; }
-    }
-
-    .wm-chrome {
-      background: var(--bg-2);
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .wm-dots { display: flex; gap: 5px; }
-    .wm-dot { width: 9px; height: 9px; border-radius: 50%; }
-    .wm-dot:nth-child(1) { background: rgba(255,95,87,0.55); }
-    .wm-dot:nth-child(2) { background: rgba(255,189,46,0.55); }
-    .wm-dot:nth-child(3) { background: rgba(39,201,63,0.55); }
-
-    .wm-url {
-      flex: 1;
-      background: rgba(255,255,255,0.04);
-      border-radius: 4px;
-      padding: 3px 9px;
-      font-size: 10px;
-      color: var(--ink-3);
-      font-family: monospace;
-    }
-
-    .wm-nav {
-      background: #0c0d18;
-      padding: 0 14px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      height: 38px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .wm-nav-logo {
-      font-size: 13px;
-      font-weight: 700;
-      color: #c2923a;
-      letter-spacing: -0.02em;
-    }
-
-    .wm-nav-link {
-      font-size: 11px;
-      color: rgba(255,255,255,0.35);
-    }
-
-    .wm-nav-link.active {
-      color: rgba(255,255,255,0.75);
-    }
-
-    .wm-body {
-      background: #f2f3f5;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .wm-page-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #0e0f14;
-      letter-spacing: -0.02em;
-      margin-bottom: 2px;
-    }
-
-    .wm-person-section {
-      background: #fff;
-      border: 1px solid #e4e5e9;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .wm-person-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 11px 8px;
-      border-bottom: 1px solid #f0f1f4;
-    }
-
-    .wm-person-avatar {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: rgba(194,146,58,0.18);
-      color: #9a7228;
-      font-size: 8px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      letter-spacing: 0.02em;
-    }
-
-    .wm-person-avatar.other {
-      background: #edeef2;
-      color: #888;
-    }
-
-    .wm-person-name {
-      font-size: 11px;
-      font-weight: 600;
-      color: #0e0f14;
-    }
-
-    .wm-you-tag {
-      font-size: 9px;
-      font-weight: 500;
-      color: #9395a8;
-      margin-left: 4px;
-    }
-
-    .wm-subsection {
-      padding: 7px 11px;
-      border-bottom: 1px solid #f0f1f4;
-    }
-
-    .wm-subsection:last-child { border-bottom: none; }
-
-    .wm-subsection-label {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #b0b2c0;
-      margin-bottom: 5px;
-    }
-
-    .wm-card {
-      background: #f8f8fa;
-      border: 1px solid #e8e9ee;
-      border-radius: 7px;
-      padding: 7px 9px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .wm-card + .wm-card { margin-top: 4px; }
-
-    .wm-card.other { opacity: 0.45; }
-
-    .wm-card-body { flex: 1; min-width: 0; }
-
-    .wm-card-title {
-      font-size: 10px;
-      font-weight: 600;
-      color: #0e0f14;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .wm-card-meta {
-      font-size: 9px;
-      color: #9395a8;
-      margin-top: 1px;
-    }
-
-    .wm-card-btns {
-      display: flex;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-
-    .wm-btn {
-      font-size: 9px;
-      font-weight: 600;
-      padding: 3px 7px;
-      border-radius: 4px;
-      border: 1px solid #e4e5e9;
-      background: #fff;
-      color: #4a4b58;
-      white-space: nowrap;
-    }
-
-    .wm-btn.notes {
-      color: #9395a8;
-      border-color: #e4e5e9;
-    }
-
-    .wm-btn.danger { color: #c2410c; border-color: rgba(185,28,28,0.18); }
-
-    .wm-chain {
-      margin-top: 6px;
-      border-top: 1px solid #edeef2;
-      padding-top: 5px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .wm-chain-item {
-      padding-left: 8px;
-      border-left: 2px solid #dfe0e8;
-      font-size: 9px;
-      color: #6b6d7e;
-      line-height: 1.5;
-    }
-
-    .wm-chain-actor {
-      font-weight: 700;
-      color: #2a2b38;
-    }
-
-    .wm-chain-time {
-      color: #b0b2c0;
-    }
-
-    .wm-chain-note {
-      display: block;
-      font-style: italic;
-      color: #888;
-      margin-top: 1px;
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* ---- Responsive ---- */
 
-    @media (max-width: 768px) {
-      section { padding: 70px 20px; }
-      .hero { padding: 100px 20px 60px; }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-grid .panel-img { max-width: 560px; }
+      .section-head { grid-template-columns: 1fr; gap: 14px; }
+      .section-head p { padding-top: 0; }
+      .workflow-layout, .how-layout, .contact-layout { grid-template-columns: 1fr; }
+      .workflow-plate, .how-panel { position: static; }
+      .index-row { grid-template-columns: 1fr; gap: 8px; padding: 22px 16px; margin: 0 -16px; }
+      .index-mark { display: none; }
+      .figures-pair { grid-template-columns: 1fr; gap: 28px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .plan + .plan { border-left: none; border-top: 1px solid var(--white-50); }
+    }
 
-      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-      .mockup { max-width: 420px; margin: 0 auto; animation: none; box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 40px rgba(194,146,58,0.05); }
-      .hero-strip { max-width: 100%; }
-
-      .ba-card { grid-template-columns: 1fr; }
-      .ba-side.ba-after { border-left: none; border-top: 1px solid var(--border); }
-      .ba-divider { display: none; }
-
-      .features-grid { grid-template-columns: 1fr; }
-      .feature-card { min-height: auto; }
-      .feature-face {
-        position: static;
-        flex-direction: row;
-        justify-content: flex-start;
-        padding: 20px 20px 8px;
-        gap: 14px;
-        opacity: 1 !important;
-      }
-      .feature-icon-lg { font-size: 28px; }
-      .feature-name { font-size: 15px; text-align: left; }
-      .feature-reveal {
-        position: static;
-        transform: none !important;
-        background: transparent;
-        padding: 0 20px 20px;
-        transition: none;
-      }
-      .feature-reveal::before { display: none; }
-      .feature-reveal-icon, .feature-reveal-title { display: none; }
-
-      .how-layout { grid-template-columns: 1fr; gap: 32px; }
-      .how-panel { position: static; display: block; }
-      .how-screens { height: 300px; }
-      .how-step { opacity: 1; }
-      .how-step-dot { background: var(--gold); border-color: var(--gold); }
-      .how-step-body { padding-bottom: 22px; }
-
-      .workflow-layout { grid-template-columns: 1fr; gap: 36px; }
-
-      .comparison { grid-template-columns: 1fr; }
-
-      .pricing-grid-2 { grid-template-columns: 1fr; }
-      .pricing-card.featured { transform: none; }
-      .pricing-card.featured:hover { transform: translateY(-3px); }
-
-      .contact-grid { grid-template-columns: 1fr; gap: 36px; }
-      .nav-links { display: none; }
-      .nav-mobile-toggle { display: block; }
-      .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+    @media (max-width: 700px) {
+      .facts { grid-template-columns: 1fr; }
+      .fact + .fact { border-left: none; border-top: 1px solid var(--line); }
+      .ledger-head { display: none; }
+      .ledger-row { grid-template-columns: 1fr; }
+      .ledger-row + .ledger-row { border-top: 1px solid var(--ink); }
+      .ledger-cell.new { border-left: none; border-top: 1px solid var(--line); }
+      .ledger-tag { display: block; }
+      .ledger-tag.old-tag { color: var(--ink-50); }
+      .ledger-tag.new-tag { color: var(--gold-deep); }
       .form-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .how-screens { height: 330px; }
     }
 
     /* ---- Reduced motion ---- */
 
     @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
-      .mockup { animation: none; }
-      .hero-eyebrow-dot { animation: none; }
-      .hero-grid-bg { animation: none; }
-      .how-screen { transition: none; }
-      #how-progress { transition: none; }
-      .feature-reveal { transition: none; }
-      .feature-face { transition: none; }
-      .btn:hover, .btn-pricing:hover { transform: none; }
+      html { scroll-behavior: auto; }
+      html.js .reveal { opacity: 1; transform: none; transition: none; }
+      html.js .rise { animation: none; opacity: 1; transform: none; }
+      .how-screen { transition: opacity 0.1s linear; transform: none; }
+      #how-progress { transition: none !important; }
+      .index-row, .index-desc, .index-mark, .btn, .nav-cta, .btn-plan, .form-submit { transition: none; }
     }
   </style>
 </head>
 <body>
 
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <!-- Nav -->
   <nav>
     <div class="nav-inner">
-      <a href="#" class="nav-logo">
-        <img src="assets/logo.png" alt="Condit" class="nav-logo-img">
+      <a href="#" class="nav-logo" aria-label="Condit home">
+        <img src="assets/logo.png" alt="Condit">
       </a>
       <ul class="nav-links">
         <li><a href="#features">Features</a></li>
         <li><a href="#how">How it works</a></li>
         <li><a href="#pricing">Pricing</a></li>
+        <li><a href="https://condit.app/login" class="nav-login">Log in</a></li>
         <li><a href="#contact" class="nav-cta">Get in touch</a></li>
       </ul>
-      <button class="nav-mobile-toggle" aria-label="Menu" onclick="toggleMobileNav()">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-mobile">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
+          <path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
         </svg>
       </button>
     </div>
+    <div class="nav-mobile" id="nav-mobile">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://condit.app/login">Log in</a>
+      <a href="#contact">Get in touch</a>
+    </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-grid-bg"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-inner">
-      <div class="hero-text">
-        <h1>Professional condition reports. <em>In minutes.</em></h1>
-        <p class="hero-sub">Create, review and share condition reports from a single platform. Built for galleries, museums, auction houses, framers and collection professionals.</p>
-        <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">Request access</a>
-          <a href="#how" class="btn btn-ghost">See how it works</a>
+  <main id="main">
+
+    <!-- Hero -->
+    <header class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <h1 class="display rise rise-1">Condition reports. <span class="tick">In minutes.</span></h1>
+            <p class="hero-sub rise rise-2">Create, review and share condition reports from one platform. Built for galleries, auction houses, framers and collection professionals.</p>
+            <div class="hero-actions rise rise-3">
+              <a href="#contact" class="btn btn-primary">Request access</a>
+              <a href="#how" class="btn btn-ghost">See how it works</a>
+            </div>
+          </div>
+          <img class="panel-img rise rise-3" src="assets/screens/hero-devices.jpg" alt="The Condit report editor open on a laptop and phone, showing artwork photographs and annotations" width="1560" height="1312">
         </div>
-        <div class="hero-strip">
-          <div class="hero-strip-item">
-            <span class="hero-strip-val">&lt; 5 min</span>
-            <span class="hero-strip-lbl">to create a report</span>
+        <div class="facts rise rise-4">
+          <div class="fact"><strong>&lt; 5 min</strong> to create a report.</div>
+          <div class="fact"><strong>Branded PDF</strong> export.</div>
+          <div class="fact"><strong>Team workflow</strong> review and approval.</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Full workflow overview -->
+    <section aria-label="The Condit workflow, from inspection to PDF">
+      <div class="container">
+        <img class="panel-img reveal" src="assets/screens/carousel-overview.jpg" alt="Ten panels walking through Condit: choosing a template, capturing and annotating photos, generating a branded PDF, and managing the workspace, tasks, templates and team" width="2048" height="1365">
+      </div>
+    </section>
+
+    <!-- Problem / comparison ledger -->
+    <section aria-labelledby="problem-heading">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 id="problem-heading" class="display">Most teams still write condition reports in Word.</h2>
+          <p>Slow to produce, inconsistent between staff, hard to review.</p>
+        </div>
+        <div class="ledger reveal" role="table" aria-label="Comparison of working without and with Condit">
+          <div class="ledger-row ledger-head" role="row">
+            <div class="ledger-cell old" role="columnheader">Without Condit</div>
+            <div class="ledger-cell new" role="columnheader">With Condit</div>
           </div>
-          <div class="hero-strip-sep"></div>
-          <div class="hero-strip-item">
-            <span class="hero-strip-val">Branded PDF</span>
-            <span class="hero-strip-lbl">export</span>
+          <div class="ledger-row" role="row">
+            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Inconsistent report formats</div>
+            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Consistent templates every time</div>
           </div>
-          <div class="hero-strip-sep"></div>
-          <div class="hero-strip-item">
-            <span class="hero-strip-val">Team workflow</span>
-            <span class="hero-strip-lbl">review and approval</span>
+          <div class="ledger-row" role="row">
+            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Time-consuming editing</div>
+            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Structured condition assessments</div>
+          </div>
+          <div class="ledger-row" role="row">
+            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Missing photos and notes</div>
+            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Embedded photos with tagged comments</div>
+          </div>
+          <div class="ledger-row" role="row">
+            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Reports lost in email chains</div>
+            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Branded PDFs in one click</div>
+          </div>
+          <div class="ledger-row" role="row">
+            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>No review workflow</div>
+            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Review and approval built in</div>
+          </div>
+          <div class="ledger-row" role="row">
+            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Hard to update once issued</div>
+            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Re-open and amend any report</div>
           </div>
         </div>
       </div>
-      <div class="mockup">
-        <div class="mockup-bar">
-          <div class="mockup-dots">
-            <div class="mockup-dot"></div>
-            <div class="mockup-dot"></div>
-            <div class="mockup-dot"></div>
-          </div>
-          <div class="mockup-url">condit.app</div>
-        </div>
-        <div class="mockup-body" style="padding:0">
-          <img src="assets/screens/report-form.png" alt="Creating a condition report in Condit" style="display:block;width:100%;height:auto">
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Problem: before/after split -->
-  <section class="problem">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label">The problem</div>
-        <h2 class="section-heading">Most teams still rely on Word documents, spreadsheets and manually edited PDFs.</h2>
-        <p class="section-sub">Reports take too long, standards vary between staff, and review processes are difficult to manage.</p>
-      </div>
-      <div class="ba-card reveal">
-        <div class="ba-side ba-before">
-          <div class="ba-side-label">Without Condit</div>
-          <ul class="ba-list">
-            <li><span class="ba-ico x">✕</span> Inconsistent report formats</li>
-            <li><span class="ba-ico x">✕</span> Time-consuming editing</li>
-            <li><span class="ba-ico x">✕</span> Missing photos and notes</li>
-            <li><span class="ba-ico x">✕</span> Reports lost in email chains</li>
-            <li><span class="ba-ico x">✕</span> No review workflow</li>
-            <li><span class="ba-ico x">✕</span> Difficult to update reports once issued</li>
-          </ul>
+    <!-- Features index -->
+    <section id="features" aria-labelledby="features-heading">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 id="features-heading" class="display">Fast, clean, consistent. Built for teams.</h2>
+          <p>Locked templates, a shared review queue, and a branded PDF in one click.</p>
         </div>
-        <div class="ba-divider">
-          <div class="ba-vs">vs</div>
-        </div>
-        <div class="ba-side ba-after">
-          <div class="ba-side-label gold">With Condit</div>
-          <ul class="ba-list">
-            <li><span class="ba-ico ok">✓</span> Consistent templates every time</li>
-            <li><span class="ba-ico ok">✓</span> Structured condition assessments</li>
-            <li><span class="ba-ico ok">✓</span> Branded PDFs in one click</li>
-            <li><span class="ba-ico ok">✓</span> Embedded photos with tagged comments</li>
-            <li><span class="ba-ico ok">✓</span> Team review and approval workflow</li>
-            <li><span class="ba-ico ok">✓</span> Re-open and amend reports at any time</li>
-          </ul>
+        <div class="index reveal">
+          <div class="index-row">
+            <h3 class="index-title">Locked templates</h3>
+            <p class="index-desc">Approved templates, so every report follows the same standard.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
+          <div class="index-row">
+            <h3 class="index-title">Custom forms</h3>
+            <p class="index-desc">Ratings, checklists, dropdowns and text fields, arranged your way.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
+          <div class="index-row">
+            <h3 class="index-title">Edit existing reports</h3>
+            <p class="index-desc">Upload a previous Condit PDF and every field repopulates, ready to amend.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
+          <div class="index-row">
+            <h3 class="index-title">PDF export and sharing</h3>
+            <p class="index-desc">Branded PDFs, generated instantly and ready to send.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
+          <div class="index-row">
+            <h3 class="index-title">Photo tagging</h3>
+            <p class="index-desc">Pin numbered comments to a photo or draw straight on it; both carry into the PDF.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
+          <div class="index-row">
+            <h3 class="index-title">Team workflows &amp; task management</h3>
+            <p class="index-desc">Review, approval and a task board, shared across the team.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Features: icon-forward, hover reveal -->
-  <section id="features">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label">Features</div>
-        <h2 class="section-heading">Fast, clean, consistent - built for teams.</h2>
-        <p class="section-sub">No Word docs to format, no PDFs to edit by hand, no reports lost in email threads. A shared web-based dashboard your whole team works from - locked templates, a review queue, and a branded PDF in one click.</p>
-      </div>
-      <div class="features-grid">
-
-        <div class="feature-card reveal reveal-delay-1">
-          <div class="feature-face">
-            <div class="feature-icon-lg">🔒</div>
-            <div class="feature-name">Locked templates</div>
-          </div>
-          <div class="feature-reveal">
-            <div class="feature-reveal-icon">🔒</div>
-            <div class="feature-reveal-title">Locked templates</div>
-            <p class="feature-reveal-desc">Create approved templates for your team and ensure every report follows the same standard.</p>
-          </div>
+    <!-- Team workflow -->
+    <section aria-labelledby="workflow-heading">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 id="workflow-heading" class="display">A shared draft queue, with clear ownership throughout.</h2>
+          <p>Every report in progress belongs to someone, and the whole team can see where it sits.</p>
         </div>
-
-        <div class="feature-card reveal reveal-delay-2">
-          <div class="feature-face">
-            <div class="feature-icon-lg">📋</div>
-            <div class="feature-name">Custom forms</div>
-          </div>
-          <div class="feature-reveal">
-            <div class="feature-reveal-icon">📋</div>
-            <div class="feature-reveal-title">Custom forms</div>
-            <p class="feature-reveal-desc">Build forms that match your workflow using ratings, checklists, dropdowns and text fields.</p>
-          </div>
-        </div>
-
-        <div class="feature-card reveal reveal-delay-3">
-          <div class="feature-face">
-            <div class="feature-icon-lg">📂</div>
-            <div class="feature-name">Edit existing reports</div>
-          </div>
-          <div class="feature-reveal">
-            <div class="feature-reveal-icon">📂</div>
-            <div class="feature-reveal-title">Edit existing reports</div>
-            <p class="feature-reveal-desc">Upload a previous Condit PDF and continue working from where you left off. Update information, add notes or use it as a starting point for future reports.</p>
-          </div>
-        </div>
-
-        <div class="feature-card reveal reveal-delay-4">
-          <div class="feature-face">
-            <div class="feature-icon-lg">⚡</div>
-            <div class="feature-name">PDF export and sharing</div>
-          </div>
-          <div class="feature-reveal">
-            <div class="feature-reveal-icon">⚡</div>
-            <div class="feature-reveal-title">PDF export and sharing</div>
-            <p class="feature-reveal-desc">Generate branded PDFs instantly and share them directly with clients and colleagues.</p>
-          </div>
-        </div>
-
-        <div class="feature-card reveal reveal-delay-1">
-          <div class="feature-face">
-            <div class="feature-icon-lg">📍</div>
-            <div class="feature-name">Photo tagging</div>
-          </div>
-          <div class="feature-reveal">
-            <div class="feature-reveal-icon">📍</div>
-            <div class="feature-reveal-title">Photo tagging</div>
-            <p class="feature-reveal-desc">Pin numbered comments to exact spots on each photo, or draw directly on the image to outline an area. Tags and sketches appear on the photo in the PDF with the comments listed alongside.</p>
-          </div>
-        </div>
-
-        <div class="feature-card reveal reveal-delay-2">
-          <div class="feature-face">
-            <div class="feature-icon-lg">🤝</div>
-            <div class="feature-name">Team workflows &amp; task management</div>
-          </div>
-          <div class="feature-reveal">
-            <div class="feature-reveal-icon">🤝</div>
-            <div class="feature-reveal-title">Team workflows &amp; task management</div>
-            <p class="feature-reveal-desc">Create, review, approve and manage condition reports across your team from one place - and track the tasks behind them with assignments, priorities and due dates.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Team workflow -->
-  <section class="how-bg">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label">Team workflow</div>
-        <h2 class="section-heading">A shared draft queue, with clear ownership throughout.</h2>
-        <p class="section-sub">Not a PDF archive. A working queue for reports in progress - each one owned by a specific person, passed for review or reassigned with a note. The whole team sees where every report is at any time.</p>
-      </div>
-      <div class="workflow-layout">
-
-        <div class="workflow-points reveal reveal-delay-1">
-          <div class="workflow-point">
-            <div class="workflow-point-icon">👤</div>
-            <div>
-              <div class="workflow-point-title">Per-person sections, clear at a glance</div>
-              <div class="workflow-point-desc">Every team member has their own section on the workspace, split into three groups: Reports, Sent for review, and Reviews. Anyone on the team can see where every report sits at a glance.</div>
+        <div class="workflow-layout">
+          <div class="reveal">
+            <div class="workflow-point">
+              <h3>Per-person sections, clear at a glance</h3>
+              <p>Each member's reports, reviews and hand-offs, in one shared view.</p>
+            </div>
+            <div class="workflow-point">
+              <h3>Review, approve, reassign or share, with notes</h3>
+              <p>Pass a draft for review with a note; approved reports carry a visible tick until they next change.</p>
+            </div>
+            <div class="workflow-point">
+              <h3>Comment threads on every draft</h3>
+              <p>Every action is logged, replies chain into conversations, and @mentions notify colleagues directly.</p>
+            </div>
+            <div class="workflow-point">
+              <h3>A task board built into your reporting</h3>
+              <p>Tasks with priorities and due dates, linked to the reports they concern.</p>
+            </div>
+            <div class="workflow-point">
+              <h3>Not storing your client data</h3>
+              <p>Finished reports are downloaded as PDFs and kept wherever you already store files. Nothing is archived on Condit's servers.</p>
             </div>
           </div>
-          <div class="workflow-point">
-            <div class="workflow-point-icon">🔁</div>
-            <div>
-              <div class="workflow-point-title">Review, approve, reassign or share - with notes</div>
-              <div class="workflow-point-desc">Pass a draft for review with a note. The reviewer reads it, comments back, and approves - the report carries a visible approval tick until it next changes. Ownership can be reassigned or shared between colleagues, with signatures always under their signer's control.</div>
-            </div>
+          <div class="workflow-plate reveal">
+            <figure class="plate">
+              <img src="assets/screens/drafts.png" alt="The team workspace in Condit, showing per-person report queues and review status" loading="lazy" width="1178" height="1176">
+              <figcaption class="plate-caption">
+                <span class="fig">Fig. 1</span>
+                <span>The team workspace and review queue. condit.app/workspace</span>
+              </figcaption>
+            </figure>
           </div>
-          <div class="workflow-point">
-            <div class="workflow-point-icon">📋</div>
-            <div>
-              <div class="workflow-point-title">Comment threads on every draft</div>
-              <div class="workflow-point-desc">Every action is logged with a timestamp and note, and anyone on the team can comment. Replies chain into conversations - "fix the frame note" and "done" stay together - and @mentioning a colleague notifies them directly.</div>
-            </div>
-          </div>
-          <div class="workflow-point">
-            <div class="workflow-point-icon">✅</div>
-            <div>
-              <div class="workflow-point-title">A task board built into your reporting</div>
-              <div class="workflow-point-desc">Spin up tasks for yourself or the team, set priority and due dates, and watch them move across a kanban board or table. Each task links to the reports it concerns and carries its own comment thread and @mentions, so follow-ups never get lost.</div>
-            </div>
-          </div>
-          <div class="workflow-point">
-            <div class="workflow-point-icon">🗑</div>
-            <div>
-              <div class="workflow-point-title">Not storing your client data</div>
-              <div class="workflow-point-desc">Drafts are a temporary working space. Finished reports are downloaded as PDFs and kept wherever your team already stores files. Nothing is archived on Condit's servers.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="reveal reveal-delay-2">
-          <div class="workflow-mockup-frame">
-            <div class="wm-chrome">
-              <div class="wm-dots">
-                <div class="wm-dot"></div>
-                <div class="wm-dot"></div>
-                <div class="wm-dot"></div>
-              </div>
-              <div class="wm-url">condit.app/workspace</div>
-            </div>
-            <img src="assets/screens/drafts.png" alt="The team workspace and review queue in Condit" style="display:block;width:100%;height:auto">
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature showcase: real screenshots -->
-  <section>
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label">In the app</div>
-        <h2 class="section-heading">Built for the way condition reports actually work.</h2>
-        <p class="section-sub">Pin numbered comments to a photo or draw straight on it, build fully customisable templates your team works from, and keep the team's tasks moving - all in the browser.</p>
-      </div>
-      <div class="showcase-grid">
-        <div class="showcase-item reveal reveal-delay-1">
-          <div class="showcase-frame">
-            <img src="assets/screens/annotator.jpg" alt="Tagging and drawing on a photo in Condit" loading="lazy">
-          </div>
-          <div class="showcase-caption">Tag and draw directly on photos, with comments listed alongside.</div>
-        </div>
-        <div class="showcase-item reveal reveal-delay-2">
-          <div class="showcase-frame">
-            <img src="assets/screens/template-editor.png" alt="Building a custom template in Condit" loading="lazy">
-          </div>
-          <div class="showcase-caption">Build and lock down your own templates from a set of field types.</div>
-        </div>
-        <div class="showcase-item reveal reveal-delay-3">
-          <div class="showcase-frame">
-            <img src="assets/screens/task-manager.png" alt="The team task board in Condit" loading="lazy">
-          </div>
-          <div class="showcase-caption">Assign, prioritise and track tasks on a board - linked to the reports they relate to.</div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- How it works: step list + animated panel -->
-  <section id="how" class="how-bg">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label">How it works</div>
-        <h2 class="section-heading">Create a report in minutes.</h2>
-        <p class="section-sub">Choose a template, complete the guided condition report, upload photographs, and generate a branded PDF. Share, review or approve - then re-open and update at any time.</p>
-      </div>
-      <div class="how-layout">
-
-        <!-- Step list -->
-        <div class="how-steps" id="how-steps">
-
-          <div class="how-step active" data-step="0">
-            <div class="how-step-ind">
-              <div class="how-step-dot"></div>
-              <div class="how-step-line"></div>
-            </div>
-            <div class="how-step-body">
-              <div class="how-step-title">Choose a template</div>
-              <div class="how-step-desc">Every report starts from an admin-approved template. Your team sees only the forms you've published - no blank pages, no improvisation.</div>
-            </div>
-          </div>
-
-          <div class="how-step" data-step="1">
-            <div class="how-step-ind">
-              <div class="how-step-dot"></div>
-              <div class="how-step-line"></div>
-            </div>
-            <div class="how-step-body">
-              <div class="how-step-title">Complete the guided condition report</div>
-              <div class="how-step-desc">Work through the structured form during the examination. Tick checklists, select from dropdowns, rate condition, add notes.</div>
-            </div>
-          </div>
-
-          <div class="how-step" data-step="2">
-            <div class="how-step-ind">
-              <div class="how-step-dot"></div>
-              <div class="how-step-line"></div>
-            </div>
-            <div class="how-step-body">
-              <div class="how-step-title">Upload photographs</div>
-              <div class="how-step-desc">Batch-upload photos in one action and add captions. Tag exact spots on each photo with numbered comments - they appear beside the image in the final report.</div>
-            </div>
-          </div>
-
-          <div class="how-step" data-step="3">
-            <div class="how-step-ind">
-              <div class="how-step-dot"></div>
-              <div class="how-step-line"></div>
-            </div>
-            <div class="how-step-body">
-              <div class="how-step-title">Generate a branded PDF</div>
-              <div class="how-step-desc">One click generates a branded PDF with your logo, colours and photos embedded. No formatting work.</div>
-            </div>
-          </div>
-
-          <div class="how-step" data-step="4">
-            <div class="how-step-ind">
-              <div class="how-step-dot"></div>
-              <div class="how-step-line"></div>
-            </div>
-            <div class="how-step-body">
-              <div class="how-step-title">Share, review or approve</div>
-              <div class="how-step-desc">Share directly to email or WhatsApp, or send the draft to a colleague for review with a note. They return it, approve it, or pass it on.</div>
-            </div>
-          </div>
-
-          <div class="how-step" data-step="5">
-            <div class="how-step-ind">
-              <div class="how-step-dot"></div>
-              <div class="how-step-line"></div>
-            </div>
-            <div class="how-step-body">
-              <div class="how-step-title">Re-open and update at any time</div>
-              <div class="how-step-desc">Upload any Condit PDF and every field, photo, and note repopulates instantly. Correct a detail, add notes, or use it as the basis for the next report on the same work.</div>
-            </div>
-          </div>
-
+    <!-- In the app: plates -->
+    <section aria-labelledby="app-heading">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 id="app-heading" class="display">Built for the way condition reports actually work.</h2>
+          <p>Photograph, annotate, template, export. All in the browser.</p>
         </div>
-
-        <!-- Animated panel -->
-        <div class="how-panel" id="how-panel">
-          <div class="how-panel-chrome">
-            <div class="how-panel-dots">
-              <div class="how-panel-dot"></div>
-              <div class="how-panel-dot"></div>
-              <div class="how-panel-dot"></div>
-            </div>
-            <div class="how-panel-url">condit.app</div>
-          </div>
-          <div class="how-progress-track">
-            <div id="how-progress"></div>
-          </div>
-          <div class="how-screens">
-
-            <!-- Screen 0: template selection -->
-            <div class="how-screen active" data-screen="0">
-              <div class="hs-tabs">
-                <span class="hs-tab on">Incoming</span>
-                <span class="hs-tab off">Outgoing</span>
-                <span class="hs-tab off">Collection</span>
-              </div>
-              <div class="hs-template-list">
-                <div class="hs-tpl">
-                  <div class="hs-tpl-icon">📄</div>
-                  <div style="flex:1">
-                    <div class="hs-tpl-name">Flatwork</div>
-                    <div class="hs-tpl-sub">Incoming - System template</div>
-                  </div>
-                  <div class="hs-tpl-btn">Start</div>
-                </div>
-                <div class="hs-tpl">
-                  <div class="hs-tpl-icon">🗿</div>
-                  <div style="flex:1">
-                    <div class="hs-tpl-name">Sculpture / 3D</div>
-                    <div class="hs-tpl-sub">Incoming - System template</div>
-                  </div>
-                  <div class="hs-tpl-btn">Start</div>
-                </div>
-                <div class="hs-tpl company">
-                  <div class="hs-tpl-icon">🔒</div>
-                  <div style="flex:1">
-                    <div class="hs-tpl-name">Framing Intake</div>
-                    <div class="hs-tpl-sub">Custom - locked by admin</div>
-                  </div>
-                  <div class="hs-tpl-btn">Start</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Screen 1: fill in the form - richer field types -->
-            <div class="how-screen" data-screen="1">
-              <div class="hs-form-sec">Condition Assessment</div>
-              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Overall condition</div>
-              <div class="hs-rating">
-                <div class="hs-r-btn sel">Good</div>
-                <div class="hs-r-btn">Fair</div>
-                <div class="hs-r-btn">Poor</div>
-                <div class="hs-r-btn">Critical</div>
-              </div>
-              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Surface defects</div>
-              <div class="hs-checks">
-                <div class="hs-check-row"><div class="hs-check-box ticked">✓</div> Cracking / flaking</div>
-                <div class="hs-check-row"><div class="hs-check-box ticked">✓</div> Surface dirt</div>
-                <div class="hs-check-row"><div class="hs-check-box"></div> Abrasion</div>
-                <div class="hs-check-row"><div class="hs-check-box"></div> Discolouration</div>
-              </div>
-              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Frame condition</div>
-              <div class="hs-dropdown">
-                <span class="hs-dropdown-val">Good - minor scuffs only</span>
-              </div>
-              <div style="font-size:9px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Examination notes</div>
-              <div class="hs-form-val" style="height:34px"></div>
-            </div>
-
-            <!-- Screen 2: upload photographs -->
-            <div class="how-screen" data-screen="2">
-              <div class="hs-form-sec">Photos</div>
-              <div class="hs-dropzone">
-                <span class="hs-dropzone-icon">📷</span>
-                <div class="hs-dropzone-title">Add photographs</div>
-                <div class="hs-dropzone-sub">Batch-upload straight from your phone or camera</div>
-              </div>
-              <div class="hs-photos">
-                <div class="hs-photo-thumb img">🖼</div>
-                <div class="hs-photo-thumb img">🖼</div>
-                <div class="hs-photo-thumb img">🖼</div>
-                <div class="hs-photo-add">+</div>
-              </div>
-            </div>
-
-            <!-- Screen 3: download PDF -->
-            <div class="how-screen" data-screen="3">
-              <div class="hs-complete">
-                <div class="hs-complete-dot"></div>
-                <div class="hs-complete-text">Report complete</div>
-              </div>
-              <div class="hs-pdf-preview">
-                <div class="hs-pdf-logo">G</div>
-                <div class="hs-pdf-lines">
-                  <div class="hs-pdf-line"></div>
-                  <div class="hs-pdf-line short"></div>
-                  <div class="hs-pdf-line"></div>
-                  <div class="hs-pdf-line short"></div>
-                </div>
-              </div>
-              <div class="hs-dl-btn">
-                <span>&#8964;</span>
-                Download PDF
-              </div>
-            </div>
-
-            <!-- Screen 4: share, review or approve -->
-            <div class="how-screen" data-screen="4">
-              <div class="hs-dl-btn" style="margin-bottom:12px">
-                Share PDF
-              </div>
-              <div class="hs-recent" style="margin-bottom:8px">
-                <div class="hs-recent-icon">🔁</div>
-                <div style="flex:1">
-                  <div class="hs-recent-name">Sent for review to E. Clarke</div>
-                  <div class="hs-recent-sub">"Please check the frame section before it goes out."</div>
-                </div>
-                <div class="hs-recent-open">In review</div>
-              </div>
-              <div class="hs-complete">
-                <div class="hs-complete-dot"></div>
-                <div class="hs-complete-text">Approved by E. Clarke</div>
-              </div>
-            </div>
-
-            <!-- Screen 5: re-upload -->
-            <div class="how-screen" data-screen="5">
-              <div class="hs-dropzone">
-                <span class="hs-dropzone-icon">📎</span>
-                <div class="hs-dropzone-title">Upload a Condit PDF</div>
-                <div class="hs-dropzone-sub">Drop a file or click to browse</div>
-              </div>
-              <div class="hs-recent">
-                <div class="hs-recent-icon">📄</div>
-                <div style="flex:1">
-                  <div class="hs-recent-name">Flatwork - Registrar</div>
-                  <div class="hs-recent-sub">J. Harrison - 07 Jun 2026</div>
-                </div>
-                <div class="hs-recent-open">Open</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Why Condit -->
-  <section>
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label">Why Condit</div>
-        <h2 class="section-heading">Built specifically for condition reporting.</h2>
-        <p class="section-sub">No spreadsheets, no Word templates, no manual PDF formatting. No software installation - works in any browser, with consistent reporting standards across teams.</p>
-      </div>
-      <div class="comparison">
-        <div class="comparison-card reveal reveal-delay-1">
-          <div class="comparison-title">vs spreadsheets</div>
-          <ul class="comparison-list">
-            <li><span class="cross">✕</span> Different format every time</li>
-            <li><span class="cross">✕</span> Fields forgotten or skipped</li>
-            <li><span class="cross">✕</span> No photos in the document</li>
-            <li><span class="cross">✕</span> Version chaos in email and drives</li>
-            <li><span class="cross">✕</span> Can't amend a report after sending</li>
-            <li><span class="cross">✕</span> No team control or standards</li>
-          </ul>
-        </div>
-        <div class="comparison-card highlight reveal reveal-delay-2">
-          <div class="comparison-title gold">With Condit</div>
-          <ul class="comparison-list">
-            <li><span class="check">✓</span> Locked templates, consistent every time</li>
-            <li><span class="check">✓</span> Checklists, dropdowns, ratings built in</li>
-            <li><span class="check">✓</span> Photos embedded in the PDF</li>
-            <li><span class="check">✓</span> Re-open and amend any report from the file</li>
-            <li><span class="check">✓</span> Your logo, your colours</li>
-            <li><span class="check">✓</span> Admin controls the standard, team follows it</li>
-            <li><span class="check">✓</span> Draft review queue for junior and senior teams</li>
-          </ul>
+        <img class="panel-img figures-wide plate-narrow reveal" src="assets/screens/capture-annotate.jpg" alt="Two panels: photographs organised into report sections, and a photo annotated with numbered condition comments" loading="lazy" width="1369" height="1149">
+        <div class="figures-pair">
+          <img class="panel-img reveal" src="assets/screens/custom-templates.jpg" alt="A tablet showing Condit's template picker, with standard and custom templates" loading="lazy" width="1254" height="1254">
+          <img class="panel-img reveal" src="assets/screens/branded-pdf.jpg" alt="A tablet showing a finished branded Condit condition report, ready to export as a PDF" loading="lazy" width="1254" height="1254">
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Pricing -->
-  <section id="pricing" class="pricing-bg">
-    <div class="container">
-      <div class="reveal" style="text-align:center">
-        <div class="section-label">Pricing</div>
-        <h2 class="section-heading">Simple per-user pricing. Unlimited reports.</h2>
-        <p class="section-sub" style="margin:0 auto">No credit meters. No per-report fees. Pay for the people who use it.</p>
-      </div>
-
-      <div class="pricing-grid-2">
-
-        <div class="pricing-card reveal reveal-delay-1">
-          <div class="pricing-name">Solo</div>
-          <div class="pricing-price"><sup>£</sup><span>30</span></div>
-          <div class="pricing-period">per month</div>
-          <div class="pricing-seats">1 user</div>
-          <ul class="pricing-features">
-            <li>Unlimited reports</li>
-            <li>All template types</li>
-            <li>Custom fields</li>
-            <li>Branded PDFs</li>
-            <li>Photo attachments</li>
-            <li>Re-open and amend reports</li>
-          </ul>
-          <a href="#contact" class="btn-pricing btn-pricing-ghost">Get in touch for a free week trial</a>
+    <!-- How it works -->
+    <section id="how" aria-labelledby="how-heading">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 id="how-heading" class="display">Create a report in minutes.</h2>
+          <p>From template to branded PDF, and back again when a report needs updating.</p>
         </div>
+        <div class="how-layout">
 
-        <div class="pricing-card featured reveal reveal-delay-2">
-          <div class="pricing-badge">For teams</div>
-          <div class="pricing-name">Team</div>
-          <div class="pricing-price"><sup>£</sup><span id="team-price-display">27</span></div>
-          <div class="pricing-period">per user / month</div>
+          <!-- Step list -->
+          <div class="how-steps reveal" id="how-steps">
 
-          <div class="team-calc">
-            <div class="team-calc-label">How many users?</div>
-            <div class="team-calc-row">
-              <div class="calc-stepper">
-                <button class="calc-btn" id="calc-minus" aria-label="Remove user">&#8722;</button>
-                <input class="calc-num" type="number" id="calc-users" value="10" min="2" max="200" aria-label="Number of users">
-                <button class="calc-btn" id="calc-plus" aria-label="Add user">&#43;</button>
-              </div>
-            </div>
-            <div class="team-calc-result">
+            <div class="how-step active" data-step="0" role="button" tabindex="0">
+              <div class="how-step-num">1</div>
               <div>
-                <div class="calc-per-user"><sup>£</sup><span id="calc-per-user">27</span></div>
-                <div class="calc-per-label">per user / month</div>
-              </div>
-              <div class="calc-total">
-                <div class="calc-total-val">£<span id="calc-total">270</span>/mo</div>
-                <div class="calc-total-label">total</div>
+                <h3>Choose a template</h3>
+                <p>Every report starts from an approved template. No blank pages, no improvisation.</p>
               </div>
             </div>
-            <div class="calc-tier-note" id="calc-tier-note">6-15 users: £27/user</div>
+
+            <div class="how-step" data-step="1" role="button" tabindex="0">
+              <div class="how-step-num">2</div>
+              <div>
+                <h3>Complete the guided condition report</h3>
+                <p>Tick checklists, rate condition and add notes as you examine.</p>
+              </div>
+            </div>
+
+            <div class="how-step" data-step="2" role="button" tabindex="0">
+              <div class="how-step-num">3</div>
+              <div>
+                <h3>Upload photographs</h3>
+                <p>Batch-upload, caption, and tag exact spots with numbered comments.</p>
+              </div>
+            </div>
+
+            <div class="how-step" data-step="3" role="button" tabindex="0">
+              <div class="how-step-num">4</div>
+              <div>
+                <h3>Generate a branded PDF</h3>
+                <p>Your logo, colours and photos, embedded in one click.</p>
+              </div>
+            </div>
+
+            <div class="how-step" data-step="4" role="button" tabindex="0">
+              <div class="how-step-num">5</div>
+              <div>
+                <h3>Share, review or approve</h3>
+                <p>Send it to a client, or pass it to a colleague for review and approval.</p>
+              </div>
+            </div>
+
+            <div class="how-step" data-step="5" role="button" tabindex="0">
+              <div class="how-step-num">6</div>
+              <div>
+                <h3>Re-open and update at any time</h3>
+                <p>Upload any Condit PDF and every field, photo and note repopulates instantly.</p>
+              </div>
+            </div>
+
           </div>
 
-          <ul class="pricing-features">
-            <li>Everything in Solo</li>
-            <li>Shared templates</li>
-            <li>Admin controls</li>
-            <li>Team branding</li>
-            <li>Review workflow</li>
-            <li>Comment history</li>
-            <li>Audit trail</li>
-            <li>Priority support</li>
-          </ul>
-          <a href="#contact" class="btn-pricing btn-pricing-primary">Get in touch for a free week trial</a>
-        </div>
+          <!-- Animated panel -->
+          <div class="how-panel reveal" id="how-panel">
+            <div class="how-panel-chrome">
+              <span>condit.app</span>
+              <span aria-hidden="true">●</span>
+            </div>
+            <div class="how-progress-track">
+              <div id="how-progress"></div>
+            </div>
+            <div class="how-screens">
 
-      </div>
-      <p class="reveal" style="text-align:center; margin-top:28px; font-size:13px; color:var(--ink-3)">
-        Free trial available for all plans. Get in touch to get started.
-      </p>
-    </div>
-  </section>
+              <!-- Screen 0: template selection -->
+              <div class="how-screen active" data-screen="0">
+                <div class="hs-tabs">
+                  <span class="hs-tab on">Incoming</span>
+                  <span class="hs-tab off">Outgoing</span>
+                  <span class="hs-tab off">Collection</span>
+                </div>
+                <div class="hs-template-list">
+                  <div class="hs-tpl">
+                    <div style="flex:1">
+                      <div class="hs-tpl-name">Flatwork</div>
+                      <div class="hs-tpl-sub">Incoming · System template</div>
+                    </div>
+                    <div class="hs-tpl-btn">Start</div>
+                  </div>
+                  <div class="hs-tpl">
+                    <div style="flex:1">
+                      <div class="hs-tpl-name">Sculpture / 3D</div>
+                      <div class="hs-tpl-sub">Incoming · System template</div>
+                    </div>
+                    <div class="hs-tpl-btn">Start</div>
+                  </div>
+                  <div class="hs-tpl company">
+                    <div style="flex:1">
+                      <div class="hs-tpl-name">Framing Intake</div>
+                      <div class="hs-tpl-sub">Custom · locked by admin</div>
+                    </div>
+                    <div class="hs-tpl-btn">Start</div>
+                  </div>
+                </div>
+              </div>
 
-  <!-- Contact -->
-  <section id="contact">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label">Get in touch</div>
-        <h2 class="section-heading">Ready to get started?</h2>
-        <p class="section-sub">Send us an email and we'll set up a free trial.</p>
-      </div>
-      <div class="contact-grid">
-        <div class="reveal reveal-delay-1">
-          <div class="contact-detail">
-            <div class="contact-detail-icon">✉</div>
-            <div>
-              <div class="contact-detail-label">Email</div>
-              <div class="contact-detail-value">hello@condit.co.uk</div>
+              <!-- Screen 1: fill in the form -->
+              <div class="how-screen" data-screen="1">
+                <div class="hs-sec-bar">Condition Assessment</div>
+                <div class="hs-lbl">Overall condition</div>
+                <div class="hs-rating">
+                  <div class="hs-r-btn sel">Good</div>
+                  <div class="hs-r-btn">Fair</div>
+                  <div class="hs-r-btn">Poor</div>
+                  <div class="hs-r-btn">Critical</div>
+                </div>
+                <div class="hs-lbl">Surface defects</div>
+                <div class="hs-checks">
+                  <div class="hs-check-row"><div class="hs-check-box ticked">✓</div> Cracking / flaking</div>
+                  <div class="hs-check-row"><div class="hs-check-box ticked">✓</div> Surface dirt</div>
+                  <div class="hs-check-row"><div class="hs-check-box"></div> Abrasion</div>
+                  <div class="hs-check-row"><div class="hs-check-box"></div> Discolouration</div>
+                </div>
+                <div class="hs-lbl">Frame condition</div>
+                <div class="hs-dropdown">
+                  <span class="hs-dropdown-val">Good, minor scuffs only</span>
+                </div>
+                <div class="hs-lbl">Examination notes</div>
+                <div class="hs-input" style="height:34px"></div>
+              </div>
+
+              <!-- Screen 2: upload photographs -->
+              <div class="how-screen" data-screen="2">
+                <div class="hs-sec-bar">Photos</div>
+                <div class="hs-dropzone">
+                  <span class="hs-dropzone-icon">📷</span>
+                  <div class="hs-dropzone-title">Add photographs</div>
+                  <div class="hs-dropzone-sub">Batch-upload straight from your phone or camera</div>
+                </div>
+                <div class="hs-photos">
+                  <div class="hs-photo-thumb img">🖼</div>
+                  <div class="hs-photo-thumb img">🖼</div>
+                  <div class="hs-photo-thumb img">🖼</div>
+                  <div class="hs-photo-add">+</div>
+                </div>
+              </div>
+
+              <!-- Screen 3: download PDF -->
+              <div class="how-screen" data-screen="3">
+                <div class="hs-complete">
+                  <div class="hs-complete-dot"></div>
+                  Report complete
+                </div>
+                <div class="hs-pdf-preview">
+                  <div class="hs-pdf-logo">G</div>
+                  <div class="hs-pdf-lines">
+                    <div class="hs-pdf-line"></div>
+                    <div class="hs-pdf-line short"></div>
+                    <div class="hs-pdf-line"></div>
+                    <div class="hs-pdf-line short"></div>
+                  </div>
+                </div>
+                <div class="hs-btn">Download PDF</div>
+              </div>
+
+              <!-- Screen 4: share, review or approve -->
+              <div class="how-screen" data-screen="4">
+                <div class="hs-btn" style="margin-bottom:12px">Share PDF</div>
+                <div class="hs-recent" style="margin-bottom:8px">
+                  <div style="flex:1">
+                    <div class="hs-recent-name">Sent for review to E. Clarke</div>
+                    <div class="hs-recent-sub">"Please check the frame section before it goes out."</div>
+                  </div>
+                  <div class="hs-recent-open">In review</div>
+                </div>
+                <div class="hs-complete">
+                  <div class="hs-complete-dot"></div>
+                  Approved by E. Clarke
+                </div>
+              </div>
+
+              <!-- Screen 5: re-upload -->
+              <div class="how-screen" data-screen="5">
+                <div class="hs-dropzone">
+                  <span class="hs-dropzone-icon">📎</span>
+                  <div class="hs-dropzone-title">Upload a Condit PDF</div>
+                  <div class="hs-dropzone-sub">Drop a file or click to browse</div>
+                </div>
+                <div class="hs-recent">
+                  <div style="flex:1">
+                    <div class="hs-recent-name">Flatwork · Registrar</div>
+                    <div class="hs-recent-sub">J. Harrison · 07 Jun 2026</div>
+                  </div>
+                  <div class="hs-recent-open">Open</div>
+                </div>
+              </div>
+
             </div>
           </div>
-          <div class="contact-detail">
-            <div class="contact-detail-icon">⏱</div>
-            <div>
-              <div class="contact-detail-label">Response time</div>
-              <div class="contact-detail-value">We reply within one business day.</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing" aria-labelledby="pricing-heading" style="padding-top:0">
+      <div class="container" style="padding-top:clamp(64px, 8vw, 110px)">
+        <div class="section-head reveal">
+          <h2 id="pricing-heading" class="display">Simple <span style="white-space:nowrap">per-user</span> pricing. Unlimited reports.</h2>
+          <p>No credit meters. No per-report fees. Pay for the people who use it.</p>
+        </div>
+        <div class="pricing-grid reveal">
+
+          <div class="plan">
+            <div class="plan-name">Solo</div>
+            <div class="plan-price"><sup>£</sup>30</div>
+            <div class="plan-period">per month, 1 user</div>
+            <ul class="plan-features">
+              <li>Unlimited reports</li>
+              <li>All template types</li>
+              <li>Custom fields</li>
+              <li>Branded PDFs</li>
+              <li>Photo attachments</li>
+              <li>Re-open and amend reports</li>
+            </ul>
+            <a href="#contact" class="btn-plan quiet">Get in touch for a free week trial</a>
+          </div>
+
+          <div class="plan">
+            <div class="plan-name">Team <span class="plan-badge">volume pricing</span></div>
+            <div class="plan-price"><sup>£</sup><span id="team-price-display">27</span></div>
+            <div class="plan-period">per user, per month</div>
+
+            <div class="team-calc">
+              <div class="team-calc-label" id="calc-label">How many users?</div>
+              <div class="calc-row">
+                <div class="calc-stepper">
+                  <button class="calc-btn" id="calc-minus" aria-label="Remove a user">&#8722;</button>
+                  <input class="calc-num" type="number" id="calc-users" value="10" min="2" max="200" aria-labelledby="calc-label">
+                  <button class="calc-btn" id="calc-plus" aria-label="Add a user">&#43;</button>
+                </div>
+                <div class="calc-out">
+                  <div class="calc-total-val">£<span id="calc-per-user">27</span> each · <span class="gold">£<span id="calc-total">270</span>/mo</span></div>
+                  <div class="calc-tier-note" id="calc-tier-note">6-15 users: £27/user</div>
+                </div>
+              </div>
+            </div>
+
+            <ul class="plan-features">
+              <li>Everything in Solo</li>
+              <li>Shared templates</li>
+              <li>Admin controls</li>
+              <li>Team branding</li>
+              <li>Review workflow</li>
+              <li>Comment history</li>
+              <li>Audit trail</li>
+              <li>Priority support</li>
+            </ul>
+            <a href="#contact" class="btn-plan">Get in touch for a free week trial</a>
+          </div>
+
+        </div>
+        <p class="pricing-note reveal">Free trial available for all plans. Get in touch to get started.</p>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 id="contact-heading" class="display">Ready to get started?</h2>
+          <p>Send us an email and we'll set up a free trial.</p>
+        </div>
+        <div class="contact-layout">
+          <div class="reveal">
+            <div class="contact-fact">
+              <div class="contact-fact-label">Email</div>
+              <div class="contact-fact-value"><a href="mailto:hello@condit.co.uk">hello@condit.co.uk</a></div>
+            </div>
+            <div class="contact-fact">
+              <div class="contact-fact-label">Response time</div>
+              <div class="contact-fact-value">We reply within one business day.</div>
             </div>
           </div>
-        </div>
-        <div class="contact-form reveal reveal-delay-2">
-          <div id="contact-success" class="form-success">
-            Thanks - we'll be in touch shortly.
-          </div>
-          <form id="contact-form" name="contact" method="POST" data-netlify="true">
-            <input type="hidden" name="form-name" value="contact">
-            <div class="form-grid">
+          <div class="reveal">
+            <div id="contact-success" class="form-success" role="status">
+              <span class="mark">✓</span>Thanks. We'll be in touch shortly.
+            </div>
+            <form id="contact-form" name="contact" method="POST" data-netlify="true">
+              <input type="hidden" name="form-name" value="contact">
+              <div class="form-grid">
+                <div class="form-row">
+                  <label class="form-label" for="cf-name">Your name</label>
+                  <input class="form-input" type="text" id="cf-name" name="name" placeholder="Jane Smith" required>
+                </div>
+                <div class="form-row">
+                  <label class="form-label" for="cf-gallery">Gallery name</label>
+                  <input class="form-input" type="text" id="cf-gallery" name="gallery" placeholder="Smith Gallery / Harrison Framing" required>
+                </div>
+              </div>
               <div class="form-row">
-                <label class="form-label" for="cf-name">Your name</label>
-                <input class="form-input" type="text" id="cf-name" name="name" placeholder="Jane Smith" required>
+                <label class="form-label" for="cf-email">Email</label>
+                <input class="form-input" type="email" id="cf-email" name="email" placeholder="jane@smithgallery.com" required>
               </div>
               <div class="form-row">
-                <label class="form-label" for="cf-gallery">Gallery name</label>
-                <input class="form-input" type="text" id="cf-gallery" name="gallery" placeholder="Smith Gallery / Harrison Framing" required>
+                <label class="form-label" for="cf-size">Team size</label>
+                <select class="form-select" id="cf-size" name="team-size">
+                  <option value="">Select...</option>
+                  <option>Just me</option>
+                  <option>2 - 5 people</option>
+                  <option>6 - 15 people</option>
+                  <option>More than 15</option>
+                </select>
               </div>
-            </div>
-            <div class="form-row">
-              <label class="form-label" for="cf-email">Email</label>
-              <input class="form-input" type="email" id="cf-email" name="email" placeholder="jane@smithgallery.com" required>
-            </div>
-            <div class="form-row">
-              <label class="form-label" for="cf-size">Team size</label>
-              <select class="form-select" id="cf-size" name="team-size">
-                <option value="">Select...</option>
-                <option>Just me</option>
-                <option>2 - 5 people</option>
-                <option>6 - 15 people</option>
-                <option>More than 15</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label class="form-label" for="cf-message">Anything else?</label>
-              <textarea class="form-textarea" id="cf-message" name="message" placeholder="What types of reports do you produce? Any specific requirements?"></textarea>
-            </div>
-            <button type="submit" class="form-submit">Send enquiry</button>
-          </form>
+              <div class="form-row">
+                <label class="form-label" for="cf-message">Anything else?</label>
+                <textarea class="form-textarea" id="cf-message" name="message" placeholder="What types of reports do you produce? Any specific requirements?"></textarea>
+              </div>
+              <button type="submit" class="form-submit">Send enquiry</button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+  </main>
 
   <!-- Footer -->
   <footer>
-    <div class="footer-inner">
+    <div class="container">
       <div class="footer-logo"><img src="assets/logo.png" alt="Condit"></div>
-      <div class="footer-links">
-        <a href="privacy.html">Privacy</a>
-        <a href="cookies.html">Cookies</a>
-        <a href="terms.html">Terms</a>
-        <a href="dpa.html">Data Processing</a>
-        <a href="legal.html">Legal</a>
+      <hr class="footer-rule">
+      <div class="footer-row">
+        <div class="footer-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="terms.html">Terms</a>
+          <a href="dpa.html">Data Processing</a>
+          <a href="legal.html">Legal</a>
+        </div>
+        <div class="footer-copy">© 2026 Condit. All rights reserved.</div>
       </div>
-      <div class="footer-copy">© 2026 Condit. All rights reserved.</div>
     </div>
   </footer>
 
@@ -2700,7 +1734,7 @@
           revealObserver.unobserve(e.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.08 });
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
@@ -2758,6 +1792,12 @@
 
     document.querySelectorAll('.how-step').forEach((step, i) => {
       step.addEventListener('click', () => howGoTo(i, true));
+      step.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          howGoTo(i, true);
+        }
+      });
     });
 
     const howSection = document.getElementById('how');
@@ -2795,13 +1835,13 @@
 
     document.getElementById('calc-minus').addEventListener('click', () => {
       const el = document.getElementById('calc-users');
-      const v = Math.max(2, parseInt(el.value, 10) - 1);
-      el.value = v; updateCalc();
+      el.value = Math.max(2, parseInt(el.value, 10) - 1);
+      updateCalc();
     });
     document.getElementById('calc-plus').addEventListener('click', () => {
       const el = document.getElementById('calc-users');
-      const v = Math.min(200, parseInt(el.value, 10) + 1);
-      el.value = v; updateCalc();
+      el.value = Math.min(200, parseInt(el.value, 10) + 1);
+      updateCalc();
     });
     document.getElementById('calc-users').addEventListener('input', updateCalc);
 
@@ -2828,13 +1868,20 @@
     });
 
     // ---- Mobile nav ----
-    function toggleMobileNav() {
-      const nav = document.querySelector('.nav-links');
-      const isOpen = nav.style.display === 'flex';
-      nav.style.cssText = isOpen
-        ? ''
-        : 'display:flex; flex-direction:column; position:absolute; top:78px; left:0; right:0; background:rgba(12,13,24,0.97); padding:12px 16px 20px; border-bottom:1px solid rgba(255,255,255,0.07); gap:4px;';
-    }
+    const navToggle = document.getElementById('nav-toggle');
+    const navMobile = document.getElementById('nav-mobile');
+
+    navToggle.addEventListener('click', () => {
+      const open = navMobile.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+
+    navMobile.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navMobile.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
   </script>
 
 </body>
