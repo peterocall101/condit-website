@@ -327,6 +327,36 @@
       height: auto;
     }
 
+    /* Workflow overview: one wide plate on large screens, a swipeable
+       strip of the same ten slides on small ones */
+    .overview-strip { display: none; }
+
+    @media (max-width: 900px) {
+      .overview-full { display: none; }
+      .overview-strip {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 0 var(--pad) 18px;
+        scroll-padding-inline: var(--pad);
+        scrollbar-width: none;
+      }
+      .overview-strip::-webkit-scrollbar { display: none; }
+      .overview-strip img {
+        flex: none;
+        width: auto;
+        height: min(464px, 115vw);
+        scroll-snap-align: start;
+      }
+      /* Bottom-row slides are cropped shorter in the source; matching
+         height keeps every slide at the same scale */
+      .overview-strip img.overview-short {
+        height: min(380px, 94vw);
+      }
+    }
+
     /* ---- Sections ---- */
 
     section { padding: clamp(72px, 10vw, 130px) 0 0; }
@@ -1237,47 +1267,19 @@
     <!-- Full workflow overview -->
     <section aria-label="The Condit workflow, from inspection to PDF">
       <div class="container">
-        <img class="panel-img reveal" src="assets/screens/carousel-overview.jpg" alt="Ten panels walking through Condit: choosing a template, capturing and annotating photos, generating a branded PDF, and managing the workspace, tasks, templates and team" width="2048" height="1365">
+        <img class="panel-img overview-full reveal" src="assets/screens/carousel-overview.jpg" alt="Ten panels walking through Condit: choosing a template, capturing and annotating photos, generating a branded PDF, and managing the workspace, tasks, templates and team" loading="lazy" width="2048" height="1365">
       </div>
-    </section>
-
-    <!-- Problem / comparison ledger -->
-    <section aria-labelledby="problem-heading">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 id="problem-heading" class="display">Most teams still write condition reports in Word.</h2>
-          <p>Slow to produce, inconsistent between staff, hard to review.</p>
-        </div>
-        <div class="ledger reveal" role="table" aria-label="Comparison of working without and with Condit">
-          <div class="ledger-row ledger-head" role="row">
-            <div class="ledger-cell old" role="columnheader">Without Condit</div>
-            <div class="ledger-cell new" role="columnheader">With Condit</div>
-          </div>
-          <div class="ledger-row" role="row">
-            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Inconsistent report formats</div>
-            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Consistent templates every time</div>
-          </div>
-          <div class="ledger-row" role="row">
-            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Time-consuming editing</div>
-            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Structured condition assessments</div>
-          </div>
-          <div class="ledger-row" role="row">
-            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Missing photos and notes</div>
-            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Embedded photos with tagged comments</div>
-          </div>
-          <div class="ledger-row" role="row">
-            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Reports lost in email chains</div>
-            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Branded PDFs in one click</div>
-          </div>
-          <div class="ledger-row" role="row">
-            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>No review workflow</div>
-            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Review and approval built in</div>
-          </div>
-          <div class="ledger-row" role="row">
-            <div class="ledger-cell old" role="cell"><span class="ledger-tag old-tag">Without Condit</span><span class="mark">✕</span>Hard to update once issued</div>
-            <div class="ledger-cell new" role="cell"><span class="ledger-tag new-tag">With Condit</span><span class="mark">✓</span>Re-open and amend any report</div>
-          </div>
-        </div>
+      <div class="overview-strip reveal" role="region" aria-label="The Condit workflow in ten slides; scroll sideways to view them all" tabindex="0">
+        <img src="assets/screens/overview/slide-01.jpg" alt="Professional condition reports, faster. The all-in-one platform for galleries, registrars and art logistics teams." loading="lazy" width="563" height="750">
+        <img src="assets/screens/overview/slide-02.jpg" alt="Start with your template. Choose from your standard or custom templates to start every report." loading="lazy" width="326" height="750">
+        <img src="assets/screens/overview/slide-03.jpg" alt="Capture everything that matters. Upload images, add captions and organise them into your report." loading="lazy" width="342" height="750">
+        <img src="assets/screens/overview/slide-04.jpg" alt="Annotate with precision. Highlight condition issues and record exactly what you see." loading="lazy" width="407" height="750">
+        <img src="assets/screens/overview/slide-05.jpg" alt="Generate branded PDF reports. Create professional, client-ready reports in seconds." loading="lazy" width="410" height="750">
+        <img class="overview-short" src="assets/screens/overview/slide-06.jpg" alt="Your workspace, all in one place. In-progress reports, your team queue and recently deleted items." loading="lazy" width="400" height="615">
+        <img class="overview-short" src="assets/screens/overview/slide-07.jpg" alt="Stay on top of team tasks. Assign tasks, set due dates and track progress across your reports." loading="lazy" width="402" height="615">
+        <img class="overview-short" src="assets/screens/overview/slide-08.jpg" alt="Create templates that work for you. Build and manage templates for consistent, accurate reporting." loading="lazy" width="417" height="615">
+        <img class="overview-short" src="assets/screens/overview/slide-09.jpg" alt="Manage your team with ease. Control access, set roles and keep your data secure." loading="lazy" width="384" height="615">
+        <img class="overview-short" src="assets/screens/overview/slide-10.jpg" alt="From inspection to PDF in minutes. Professional condition reports made simple." loading="lazy" width="445" height="615">
       </div>
     </section>
 
@@ -1318,49 +1320,6 @@
             <h3 class="index-title">Team workflows &amp; task management</h3>
             <p class="index-desc">Review, approval and a task board, shared across the team.</p>
             <span class="index-mark" aria-hidden="true">✓</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Team workflow -->
-    <section aria-labelledby="workflow-heading">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 id="workflow-heading" class="display">A shared draft queue, with clear ownership throughout.</h2>
-          <p>Every report in progress belongs to someone, and the whole team can see where it sits.</p>
-        </div>
-        <div class="workflow-layout">
-          <div class="reveal">
-            <div class="workflow-point">
-              <h3>Per-person sections, clear at a glance</h3>
-              <p>Each member's reports, reviews and hand-offs, in one shared view.</p>
-            </div>
-            <div class="workflow-point">
-              <h3>Review, approve, reassign or share, with notes</h3>
-              <p>Pass a draft for review with a note; approved reports carry a visible tick until they next change.</p>
-            </div>
-            <div class="workflow-point">
-              <h3>Comment threads on every draft</h3>
-              <p>Every action is logged, replies chain into conversations, and @mentions notify colleagues directly.</p>
-            </div>
-            <div class="workflow-point">
-              <h3>A task board built into your reporting</h3>
-              <p>Tasks with priorities and due dates, linked to the reports they concern.</p>
-            </div>
-            <div class="workflow-point">
-              <h3>Not storing your client data</h3>
-              <p>Finished reports are downloaded as PDFs and kept wherever you already store files. Nothing is archived on Condit's servers.</p>
-            </div>
-          </div>
-          <div class="workflow-plate reveal">
-            <figure class="plate">
-              <img src="assets/screens/drafts.png" alt="The team workspace in Condit, showing per-person report queues and review status" loading="lazy" width="1178" height="1176">
-              <figcaption class="plate-caption">
-                <span class="fig">Fig. 1</span>
-                <span>The team workspace and review queue. condit.app/workspace</span>
-              </figcaption>
-            </figure>
           </div>
         </div>
       </div>
