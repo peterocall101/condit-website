@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Condit - Art Condition Reporting Software</title>
-  <meta name="description" content="Condit is condition reporting software for galleries, framers, shippers, and conservators. Fill a form, attach photos, and download a branded PDF report in minutes.">
+  <meta name="description" content="Condit is condition reporting software for galleries, auction houses, framers, shippers and conservators. High-resolution photographs with deep zoom annotation and IIIF support, exported as a branded PDF in minutes.">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/favicon-180.png">
   <script type="application/ld+json">
@@ -525,6 +525,25 @@
       gap: 28px;
       max-width: 760px;
       margin: 0 auto;
+    }
+
+    /* Real app screenshots shown two-up inside a plate, divided by a hairline.
+       A shared aspect-ratio keeps both panes aligned even though the two
+       captures differ slightly in size. */
+    .figures-pair-wide {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--ink);
+    }
+
+    .figures-pair-wide img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1250 / 868;
+      object-fit: cover;
+      background: #fff;
     }
 
     /* ---- How it works ---- */
@@ -1191,6 +1210,8 @@
       .ledger-tag.old-tag { color: var(--ink-50); }
       .ledger-tag.new-tag { color: var(--gold-deep); }
       .form-grid { grid-template-columns: 1fr; }
+      /* Two-up panes get too small to read side by side on a phone */
+      .figures-pair-wide { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .nav-toggle { display: block; }
       .how-screens { height: 330px; }
@@ -1267,7 +1288,7 @@
     <!-- Full workflow overview -->
     <section aria-label="The Condit workflow, from inspection to PDF">
       <div class="container">
-        <img class="panel-img overview-full reveal" src="assets/screens/carousel-overview.jpg" alt="Ten panels walking through Condit: choosing a template, capturing and annotating photos, generating a branded PDF, and managing the workspace, tasks, templates and team" loading="lazy" width="2048" height="1365">
+        <img class="panel-img overview-full reveal" src="assets/screens/carousel-overview.jpg" alt="Ten panels walking through Condit: choosing a template, capturing and annotating photos, generating a branded PDF, and managing the workspace, tasks, templates and team" loading="lazy" width="1536" height="1024">
       </div>
       <div class="overview-strip reveal" role="region" aria-label="The Condit workflow in ten slides; scroll sideways to view them all" tabindex="0">
         <img src="assets/screens/overview/slide-01.jpg" alt="Professional condition reports, faster. The all-in-one platform for galleries, registrars and art logistics teams." loading="lazy" width="563" height="750">
@@ -1317,6 +1338,21 @@
             <span class="index-mark" aria-hidden="true">✓</span>
           </div>
           <div class="index-row">
+            <h3 class="index-title">High-resolution photographs</h3>
+            <p class="index-desc">Photographs held at up to 4000px, so what you record is the detail itself, not a description of it.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
+          <div class="index-row">
+            <h3 class="index-title">Deep zoom annotation</h3>
+            <p class="index-desc">Zoom right into the surface and pin a comment to the exact spot, at full resolution.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
+          <div class="index-row">
+            <h3 class="index-title">IIIF images</h3>
+            <p class="index-desc">Paste a IIIF manifest or image URL and annotate the original, served straight from your own image server.</p>
+            <span class="index-mark" aria-hidden="true">✓</span>
+          </div>
+          <div class="index-row">
             <h3 class="index-title">Team workflows &amp; task management</h3>
             <p class="index-desc">Review, approval and a task board, shared across the team.</p>
             <span class="index-mark" aria-hidden="true">✓</span>
@@ -1330,8 +1366,18 @@
       <div class="container">
         <div class="section-head reveal">
           <h2 id="app-heading" class="display">Built for the way condition reports actually work.</h2>
-          <p>Photograph, annotate, template, export.</p>
+          <p>Photograph at full resolution, zoom in, annotate, export.</p>
         </div>
+        <figure class="plate figures-wide reveal">
+          <div class="figures-pair-wide">
+            <img src="assets/screens/deep-zoom-full.jpg" alt="A marble sculpture shown whole in the Condit annotator at 10% zoom, with a single numbered tag placed on the figure" loading="lazy" width="1250" height="868">
+            <img src="assets/screens/deep-zoom-detail.jpg" alt="The same sculpture zoomed in close, the marble surface filling the frame, with the same tag circled and the comment 'slight abrasion'" loading="lazy" width="1188" height="818">
+          </div>
+          <figcaption class="plate-caption">
+            <span class="fig">Fig. 1</span>
+            The same annotation seen whole and at full zoom. Photographs are held at up to 4000px, and tags stay anchored to the artwork at any magnification.
+          </figcaption>
+        </figure>
         <img class="panel-img figures-wide plate-narrow reveal" src="assets/screens/capture-annotate.jpg" alt="Two panels: photographs organised into report sections, and a photo annotated with numbered condition comments" loading="lazy" width="1369" height="1149">
         <div class="figures-pair">
           <img class="panel-img reveal" src="assets/screens/custom-templates.jpg" alt="A tablet showing Condit's template picker, with standard and custom templates" loading="lazy" width="1254" height="1254">
@@ -1372,7 +1418,7 @@
               <div class="how-step-num">3</div>
               <div>
                 <h3>Upload photographs</h3>
-                <p>Batch-upload, caption, and tag exact spots with numbered comments.</p>
+                <p>Batch-upload at up to 4000px, caption, then zoom deep into the surface to tag exact spots with numbered comments.</p>
               </div>
             </div>
 
@@ -1564,7 +1610,7 @@
               <li>Photo attachments</li>
               <li>Re-open and amend reports</li>
             </ul>
-            <a href="#contact" class="btn-plan quiet">Get in touch for a free week trial</a>
+            <a href="#contact" class="btn-plan quiet">Get in touch for a free two-week trial</a>
           </div>
 
           <div class="plan">
@@ -1597,7 +1643,7 @@
               <li>Audit trail</li>
               <li>Priority support</li>
             </ul>
-            <a href="#contact" class="btn-plan">Get in touch for a free week trial</a>
+            <a href="#contact" class="btn-plan">Get in touch for a free two-week trial</a>
           </div>
 
         </div>
@@ -1635,8 +1681,8 @@
                   <input class="form-input" type="text" id="cf-name" name="name" placeholder="Jane Smith" required>
                 </div>
                 <div class="form-row">
-                  <label class="form-label" for="cf-gallery">Gallery name</label>
-                  <input class="form-input" type="text" id="cf-gallery" name="gallery" placeholder="Smith Gallery / Harrison Framing" required>
+                  <label class="form-label" for="cf-company">Company name</label>
+                  <input class="form-input" type="text" id="cf-company" name="company" placeholder="Smith Gallery / Harrison Auctions" required>
                 </div>
               </div>
               <div class="form-row">
